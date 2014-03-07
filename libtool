@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # libtool - Provide generalized library-building support services.
-# Generated automatically by config.status (htmlcxx) 0.85
+# Generated automatically by config.status (findscholarships) version-0.1
 # Libtool was configured on host mmsc.home:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 #
@@ -39,15 +39,15 @@ available_tags="CXX "
 
 # ### BEGIN LIBTOOL CONFIG
 
-# Whether or not to build static libraries.
-build_old_libs=no
-
 # Which release of libtool.m4 was used?
 macro_version=2.4.2
 macro_revision=1.3337
 
 # Whether or not to build shared libraries.
 build_libtool_libs=yes
+
+# Whether or not to build static libraries.
+build_old_libs=yes
 
 # What type of objects to build.
 pic_mode=default

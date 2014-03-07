@@ -1,11 +1,23 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-#AC_PREREQ(2.57)
-AC_INIT(htmlcxx.cc)
-AM_INIT_AUTOMAKE(htmlcxx, 0.85)
+AC_PREREQ(2.61)
+#AC_INIT(htmlcxx.cc)
+#AM_INIT_AUTOMAKE(findscholarships, 0.1)
+AC_INIT(findscholarships, version-0.1)
+AM_INIT_AUTOMAKE([-Wall gnu check-news 1.10])
 AM_CONFIG_HEADER([config.h])
-AM_DISABLE_STATIC
+#AM_DISABLE_STATIC
+
+DX_HTML_FEATURE([ON])
+#DX_CHM_FEATURE([OFF])
+#DX_CHI_FEATURE([OFF])
+#DX_MAN_FEATURE([OFF])
+#DX_RTF_FEATURE([OFF])
+#DX_XML_FEATURE([OFF])
+#DX_PDF_FEATURE([OFF])
+#DX_PS_FEATURE([OFF])
+#DX_INIT_DOXYGEN([dmcs],[doxygen.cfg],[doc])
 
 # Checks for programs.
 AC_PROG_CXX
@@ -13,6 +25,11 @@ AC_PROG_CC
 AM_PROG_LEX
 AC_PROG_YACC
 AC_PROG_LIBTOOL
+
+#
+# check for libcurl
+#
+LIBCURL_CHECK_CONFIG([], [], [], [AC_MSG_ERROR([could not find CURL library. Download it at http://curl.haxx.se/.])])
 
 # Checks for libraries.
 # Replace `main' with a function in -lfl:
@@ -35,6 +52,21 @@ AC_HEADER_TIME
 
 AC_LANG_CPLUSPLUS
 CXXFLAGS="$CXXFLAGS -DDEFAULT_CSS=\"\\\"$datadir/htmlcxx/css/default.css\\\"\""
+
+# checking for boost libs
+BOOST_REQUIRE([1.43.0])
+BOOST_SMART_PTR
+BOOST_STRING_ALGO
+BOOST_TOKENIZER
+BOOST_IOSTREAMS
+BOOST_GRAPH #right now, we don't care about the libboost-graph shared library
+BOOST_PROGRAM_OPTIONS
+BOOST_SYSTEM
+BOOST_THREADS
+BOOST_SERIALIZATION
+BOOST_TEST
+BOOST_DATE_TIME
+BOOST_ASIO
 
 AC_CONFIG_FILES([Makefile html/Makefile css/Makefile])
 AC_OUTPUT(htmlcxx.pc)

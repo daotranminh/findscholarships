@@ -1,3 +1,6 @@
-2014-03-07 22:10 daotranminh
+2014-03-07 daotranminh
+
+	* Update configuration to take into account doxygen and boost
+	(must run aclocal -I m4)
 
 	* Import code from htmlcxx

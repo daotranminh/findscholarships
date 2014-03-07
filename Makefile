@@ -88,7 +88,11 @@ DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
 	compile config.guess config.sub install-sh missing ylwrap \
 	ltmain.sh
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/boost.m4 \
+	$(top_srcdir)/m4/doxygen.m4 $(top_srcdir)/m4/libcurl.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -282,6 +286,36 @@ AUTOCONF = ${SHELL} /Users/minhdt/Documents/Study/github/findscholarships/missin
 AUTOHEADER = ${SHELL} /Users/minhdt/Documents/Study/github/findscholarships/missing autoheader
 AUTOMAKE = ${SHELL} /Users/minhdt/Documents/Study/github/findscholarships/missing automake-1.14
 AWK = awk
+BOOST_CPPFLAGS = -I/opt/local/include 
+BOOST_DATE_TIME_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_DATE_TIME_LDPATH = /opt/local/lib
+BOOST_DATE_TIME_LIBS = -lboost_date_time-mt
+BOOST_GRAPH_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_GRAPH_LDPATH = /opt/local/lib
+BOOST_GRAPH_LIBS = -lboost_graph-mt
+BOOST_IOSTREAMS_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_IOSTREAMS_LDPATH = /opt/local/lib
+BOOST_IOSTREAMS_LIBS = -lboost_iostreams-mt
+BOOST_LDPATH = /opt/local/lib
+BOOST_PROGRAM_OPTIONS_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_PROGRAM_OPTIONS_LDPATH = /opt/local/lib
+BOOST_PROGRAM_OPTIONS_LIBS = -lboost_program_options-mt
+BOOST_ROOT = 
+BOOST_SERIALIZATION_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_SERIALIZATION_LDPATH = /opt/local/lib
+BOOST_SERIALIZATION_LIBS = -lboost_serialization-mt
+BOOST_SYSTEM_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_SYSTEM_LDPATH = /opt/local/lib
+BOOST_SYSTEM_LIBS = -lboost_system-mt
+BOOST_THREAD_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_THREAD_LDPATH = /opt/local/lib
+BOOST_THREAD_LIBS = -lboost_thread-mt -lboost_system-mt 
+BOOST_THREAD_WIN32_LDFLAGS = 
+BOOST_THREAD_WIN32_LDPATH = 
+BOOST_THREAD_WIN32_LIBS = 
+BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_UNIT_TEST_FRAMEWORK_LDPATH = /opt/local/lib
+BOOST_UNIT_TEST_FRAMEWORK_LIBS = -lboost_unit_test_framework-mt
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
@@ -294,6 +328,7 @@ CXXFLAGS = -g -O2 -DDEFAULT_CSS="\"${datarootdir}/htmlcxx/css/default.css\""
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
+DISTCHECK_CONFIGURE_FLAGS =  '--with-boost='
 DLLTOOL = false
 DSYMUTIL = dsymutil
 DUMPBIN = 
@@ -314,6 +349,8 @@ LDFLAGS =
 LEX = flex
 LEXLIB = -ll
 LEX_OUTPUT_ROOT = lex.yy
+LIBCURL = -L/opt/local/lib -lcurl -lidn -lssl -lcrypto -lssl -lcrypto -lz
+LIBCURL_CPPFLAGS = -I/opt/local/include
 LIBOBJS = 
 LIBS = -liconv 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
@@ -345,6 +382,7 @@ STRIP = strip
 VERSION = version-0.1
 YACC = bison -y
 YFLAGS = 
+_libcurl_config = 
 abs_builddir = /Users/minhdt/Documents/Study/github/findscholarships
 abs_srcdir = /Users/minhdt/Documents/Study/github/findscholarships
 abs_top_builddir = /Users/minhdt/Documents/Study/github/findscholarships
@@ -398,10 +436,12 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
+AUTOMAKE_OPTIONS = gnu check-news 1.10
+ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = html css
 htmlcxx_SOURCES = htmlcxx.cc wingetopt.h 
 htmlcxx_LDADD = html/libhtmlcxx.la css/libcss_parser_pp.la css/libcss_parser.la
-EXTRA_DIST = ASF-2.0 LGPL_V2 wingetopt.c htmlcxx.spec htmlcxx.vcproj htmlcxxapp.vcproj htmlcxx.pc.in
+EXTRA_DIST = ASF-2.0 LGPL_V2 wingetopt.c htmlcxx.spec htmlcxx.vcproj htmlcxxapp.vcproj htmlcxx.pc.in COPYING
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = htmlcxx.pc
 all: config.h
@@ -680,6 +720,12 @@ distclean-tags:
 	-rm -f cscope.out cscope.in.out cscope.po.out cscope.files
 
 distdir: $(DISTFILES)
+	@case `sed 15q $(srcdir)/NEWS` in \
+	*"$(VERSION)"*) : ;; \
+	*) \
+	  echo "NEWS not updated; not releasing" 1>&2; \
+	  exit 1;; \
+	esac
 	$(am__remove_distdir)
 	test -d "$(distdir)" || mkdir "$(distdir)"
 	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \

@@ -11,7 +11,7 @@ dlname='libcss_parser_pp.0.dylib'
 library_names='libcss_parser_pp.0.dylib libcss_parser_pp.dylib'
 
 # The name of the static archive.
-old_library=''
+old_library='libcss_parser_pp.a'
 
 # Linker flags that can not go in dependency_libs.
 inherited_linker_flags=' '

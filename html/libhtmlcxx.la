@@ -11,7 +11,7 @@ dlname='libhtmlcxx.3.dylib'
 library_names='libhtmlcxx.3.dylib libhtmlcxx.dylib'
 
 # The name of the static archive.
-old_library=''
+old_library='libhtmlcxx.a'
 
 # Linker flags that can not go in dependency_libs.
 inherited_linker_flags=' '

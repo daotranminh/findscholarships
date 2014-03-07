@@ -85,7 +85,11 @@ DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am css_syntax.h \
 	css_syntax.c css_lex.c $(top_srcdir)/depcomp \
 	$(top_srcdir)/ylwrap $(include_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/boost.m4 \
+	$(top_srcdir)/m4/doxygen.m4 $(top_srcdir)/m4/libcurl.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -247,6 +251,36 @@ AUTOCONF = ${SHELL} /Users/minhdt/Documents/Study/github/findscholarships/missin
 AUTOHEADER = ${SHELL} /Users/minhdt/Documents/Study/github/findscholarships/missing autoheader
 AUTOMAKE = ${SHELL} /Users/minhdt/Documents/Study/github/findscholarships/missing automake-1.14
 AWK = awk
+BOOST_CPPFLAGS = -I/opt/local/include 
+BOOST_DATE_TIME_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_DATE_TIME_LDPATH = /opt/local/lib
+BOOST_DATE_TIME_LIBS = -lboost_date_time-mt
+BOOST_GRAPH_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_GRAPH_LDPATH = /opt/local/lib
+BOOST_GRAPH_LIBS = -lboost_graph-mt
+BOOST_IOSTREAMS_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_IOSTREAMS_LDPATH = /opt/local/lib
+BOOST_IOSTREAMS_LIBS = -lboost_iostreams-mt
+BOOST_LDPATH = /opt/local/lib
+BOOST_PROGRAM_OPTIONS_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_PROGRAM_OPTIONS_LDPATH = /opt/local/lib
+BOOST_PROGRAM_OPTIONS_LIBS = -lboost_program_options-mt
+BOOST_ROOT = 
+BOOST_SERIALIZATION_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_SERIALIZATION_LDPATH = /opt/local/lib
+BOOST_SERIALIZATION_LIBS = -lboost_serialization-mt
+BOOST_SYSTEM_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_SYSTEM_LDPATH = /opt/local/lib
+BOOST_SYSTEM_LIBS = -lboost_system-mt
+BOOST_THREAD_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_THREAD_LDPATH = /opt/local/lib
+BOOST_THREAD_LIBS = -lboost_thread-mt -lboost_system-mt 
+BOOST_THREAD_WIN32_LDFLAGS = 
+BOOST_THREAD_WIN32_LDPATH = 
+BOOST_THREAD_WIN32_LIBS = 
+BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS = -L/opt/local/lib -Wl,-rpath,/opt/local/lib
+BOOST_UNIT_TEST_FRAMEWORK_LDPATH = /opt/local/lib
+BOOST_UNIT_TEST_FRAMEWORK_LIBS = -lboost_unit_test_framework-mt
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
@@ -259,6 +293,7 @@ CXXFLAGS = -g -O2 -DDEFAULT_CSS="\"${datarootdir}/htmlcxx/css/default.css\""
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
+DISTCHECK_CONFIGURE_FLAGS =  '--with-boost='
 DLLTOOL = false
 DSYMUTIL = dsymutil
 DUMPBIN = 
@@ -279,6 +314,8 @@ LDFLAGS =
 LEX = flex
 LEXLIB = -ll
 LEX_OUTPUT_ROOT = lex.yy
+LIBCURL = -L/opt/local/lib -lcurl -lidn -lssl -lcrypto -lssl -lcrypto -lz
+LIBCURL_CPPFLAGS = -I/opt/local/include
 LIBOBJS = 
 LIBS = -liconv 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
@@ -310,6 +347,7 @@ STRIP = strip
 VERSION = version-0.1
 YACC = bison -y
 YFLAGS = 
+_libcurl_config = 
 abs_builddir = /Users/minhdt/Documents/Study/github/findscholarships/css
 abs_srcdir = /Users/minhdt/Documents/Study/github/findscholarships/css
 abs_top_builddir = /Users/minhdt/Documents/Study/github/findscholarships

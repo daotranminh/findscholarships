@@ -1,6 +1,8 @@
 2014-03-07 daotranminh
 
-	* Update configuration to take into account doxygen and boost
+	* Makefile.am: Remove problematic #include doxygen.am.
+
+	* Update configuration to take into account doxygen and boost.
 	(must run aclocal -I m4)
 
-	* Import code from htmlcxx
+	* Import code from htmlcxx.

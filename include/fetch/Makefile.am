@@ -1,5 +1,3 @@
-SUBDIRS = html css fetch
-
 # including headers for make dist
 noinst_HEADERS =  \
-	wingetopt.h
+	Fetcher.hpp

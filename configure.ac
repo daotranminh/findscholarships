@@ -73,9 +73,11 @@ AC_CONFIG_FILES([
 	include/Makefile
 	include/html/Makefile
 	include/css/Makefile
+	include/fetch/Makefile
 	src/Makefile 
 	src/html/Makefile 
 	src/css/Makefile
+	src/fetch/Makefile
 ])
 
 AC_OUTPUT(htmlcxx.pc)

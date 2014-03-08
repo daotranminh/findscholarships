@@ -54,19 +54,28 @@ AC_LANG_CPLUSPLUS
 CXXFLAGS="$CXXFLAGS -DDEFAULT_CSS=\"\\\"$datadir/htmlcxx/css/default.css\\\"\""
 
 # checking for boost libs
-BOOST_REQUIRE([1.43.0])
-BOOST_SMART_PTR
-BOOST_STRING_ALGO
-BOOST_TOKENIZER
-BOOST_IOSTREAMS
-BOOST_GRAPH #right now, we don't care about the libboost-graph shared library
-BOOST_PROGRAM_OPTIONS
-BOOST_SYSTEM
-BOOST_THREADS
-BOOST_SERIALIZATION
-BOOST_TEST
-BOOST_DATE_TIME
-BOOST_ASIO
+#BOOST_REQUIRE([1.43.0])
+#BOOST_SMART_PTR
+#BOOST_STRING_ALGO
+#BOOST_TOKENIZER
+#BOOST_IOSTREAMS
+#BOOST_GRAPH #right now, we don't care about the libboost-graph shared library
+#BOOST_PROGRAM_OPTIONS
+#BOOST_SYSTEM
+#BOOST_THREADS
+#BOOST_SERIALIZATION
+#BOOST_TEST
+#BOOST_DATE_TIME
+#BOOST_ASIO
 
-AC_CONFIG_FILES([Makefile html/Makefile css/Makefile])
+AC_CONFIG_FILES([
+	Makefile
+	include/Makefile
+	include/html/Makefile
+	include/css/Makefile
+	src/Makefile 
+	src/html/Makefile 
+	src/css/Makefile
+])
+
 AC_OUTPUT(htmlcxx.pc)

@@ -1,47 +1,5 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Defined if the requested minimum BOOST version is satisfied */
-#undef HAVE_BOOST
-
-/* Define to 1 if you have <boost/algorithm/string.hpp> */
-#undef HAVE_BOOST_ALGORITHM_STRING_HPP
-
-/* Define to 1 if you have <boost/archive/text_oarchive.hpp> */
-#undef HAVE_BOOST_ARCHIVE_TEXT_OARCHIVE_HPP
-
-/* Define to 1 if you have <boost/asio.hpp> */
-#undef HAVE_BOOST_ASIO_HPP
-
-/* Define to 1 if you have <boost/date_time/posix_time/posix_time.hpp> */
-#undef HAVE_BOOST_DATE_TIME_POSIX_TIME_POSIX_TIME_HPP
-
-/* Define to 1 if you have <boost/graph/adjacency_list.hpp> */
-#undef HAVE_BOOST_GRAPH_ADJACENCY_LIST_HPP
-
-/* Define to 1 if you have <boost/iostreams/device/file_descriptor.hpp> */
-#undef HAVE_BOOST_IOSTREAMS_DEVICE_FILE_DESCRIPTOR_HPP
-
-/* Define to 1 if you have <boost/program_options.hpp> */
-#undef HAVE_BOOST_PROGRAM_OPTIONS_HPP
-
-/* Define to 1 if you have <boost/scoped_ptr.hpp> */
-#undef HAVE_BOOST_SCOPED_PTR_HPP
-
-/* Define to 1 if you have <boost/shared_ptr.hpp> */
-#undef HAVE_BOOST_SHARED_PTR_HPP
-
-/* Define to 1 if you have <boost/system/error_code.hpp> */
-#undef HAVE_BOOST_SYSTEM_ERROR_CODE_HPP
-
-/* Define to 1 if you have <boost/test/unit_test.hpp> */
-#undef HAVE_BOOST_TEST_UNIT_TEST_HPP
-
-/* Define to 1 if you have <boost/thread.hpp> */
-#undef HAVE_BOOST_THREAD_HPP
-
-/* Define to 1 if you have <boost/tokenizer.hpp> */
-#undef HAVE_BOOST_TOKENIZER_HPP
-
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 

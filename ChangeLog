@@ -1,3 +1,6 @@
+2014-03-08 daotranminh
+	* Reorganize code: src, include and subdirs for libs.
+
 2014-03-07 daotranminh
 
 	* Makefile.am: Remove problematic #include doxygen.am.

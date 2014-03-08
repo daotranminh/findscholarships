@@ -1,14 +1,6 @@
-AUTOMAKE_OPTIONS = gnu check-news 1.10
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = html css
+SUBDIRS = include src
 
-bin_PROGRAMS = htmlcxx
-htmlcxx_SOURCES = htmlcxx.cc wingetopt.h 
+EXTRA_DIST = COPYING
 
-htmlcxx_LDADD = html/libhtmlcxx.la css/libcss_parser_pp.la css/libcss_parser.la
-
-EXTRA_DIST = ASF-2.0 LGPL_V2 wingetopt.c htmlcxx.spec htmlcxx.vcproj htmlcxxapp.vcproj htmlcxx.pc.in COPYING
-
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = htmlcxx.pc

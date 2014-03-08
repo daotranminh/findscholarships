@@ -393,7 +393,7 @@ on `(hostname || uname -n) 2>/dev/null | sed 1q`
 "
 
 # Files that config.status was made for.
-config_files=" Makefile html/Makefile css/Makefile htmlcxx.pc"
+config_files=" Makefile include/Makefile include/html/Makefile include/css/Makefile src/Makefile src/html/Makefile src/css/Makefile htmlcxx.pc"
 config_headers=" config.h"
 config_commands=" depfiles libtool"
 
@@ -801,8 +801,12 @@ do
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "html/Makefile") CONFIG_FILES="$CONFIG_FILES html/Makefile" ;;
-    "css/Makefile") CONFIG_FILES="$CONFIG_FILES css/Makefile" ;;
+    "include/Makefile") CONFIG_FILES="$CONFIG_FILES include/Makefile" ;;
+    "include/html/Makefile") CONFIG_FILES="$CONFIG_FILES include/html/Makefile" ;;
+    "include/css/Makefile") CONFIG_FILES="$CONFIG_FILES include/css/Makefile" ;;
+    "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
+    "src/html/Makefile") CONFIG_FILES="$CONFIG_FILES src/html/Makefile" ;;
+    "src/css/Makefile") CONFIG_FILES="$CONFIG_FILES src/css/Makefile" ;;
     "htmlcxx.pc") CONFIG_FILES="$CONFIG_FILES htmlcxx.pc" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
@@ -873,37 +877,6 @@ S["am__EXEEXT_FALSE"]=""
 S["am__EXEEXT_TRUE"]="#"
 S["LTLIBOBJS"]=""
 S["LIBOBJS"]=""
-S["BOOST_DATE_TIME_LIBS"]="-lboost_date_time-mt"
-S["BOOST_DATE_TIME_LDPATH"]="/opt/local/lib"
-S["BOOST_DATE_TIME_LDFLAGS"]="-L/opt/local/lib -Wl,-rpath,/opt/local/lib"
-S["BOOST_UNIT_TEST_FRAMEWORK_LIBS"]="-lboost_unit_test_framework-mt"
-S["BOOST_UNIT_TEST_FRAMEWORK_LDPATH"]="/opt/local/lib"
-S["BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS"]="-L/opt/local/lib -Wl,-rpath,/opt/local/lib"
-S["BOOST_SERIALIZATION_LIBS"]="-lboost_serialization-mt"
-S["BOOST_SERIALIZATION_LDPATH"]="/opt/local/lib"
-S["BOOST_SERIALIZATION_LDFLAGS"]="-L/opt/local/lib -Wl,-rpath,/opt/local/lib"
-S["BOOST_THREAD_LIBS"]="-lboost_thread-mt -lboost_system-mt "
-S["BOOST_THREAD_LDPATH"]="/opt/local/lib"
-S["BOOST_THREAD_LDFLAGS"]="-L/opt/local/lib -Wl,-rpath,/opt/local/lib"
-S["BOOST_THREAD_WIN32_LIBS"]=""
-S["BOOST_THREAD_WIN32_LDPATH"]=""
-S["BOOST_THREAD_WIN32_LDFLAGS"]=""
-S["BOOST_SYSTEM_LIBS"]="-lboost_system-mt"
-S["BOOST_SYSTEM_LDPATH"]="/opt/local/lib"
-S["BOOST_SYSTEM_LDFLAGS"]="-L/opt/local/lib -Wl,-rpath,/opt/local/lib"
-S["BOOST_PROGRAM_OPTIONS_LIBS"]="-lboost_program_options-mt"
-S["BOOST_PROGRAM_OPTIONS_LDPATH"]="/opt/local/lib"
-S["BOOST_PROGRAM_OPTIONS_LDFLAGS"]="-L/opt/local/lib -Wl,-rpath,/opt/local/lib"
-S["BOOST_GRAPH_LIBS"]="-lboost_graph-mt"
-S["BOOST_GRAPH_LDPATH"]="/opt/local/lib"
-S["BOOST_GRAPH_LDFLAGS"]="-L/opt/local/lib -Wl,-rpath,/opt/local/lib"
-S["BOOST_IOSTREAMS_LIBS"]="-lboost_iostreams-mt"
-S["BOOST_LDPATH"]="/opt/local/lib"
-S["BOOST_IOSTREAMS_LDPATH"]="/opt/local/lib"
-S["BOOST_IOSTREAMS_LDFLAGS"]="-L/opt/local/lib -Wl,-rpath,/opt/local/lib"
-S["BOOST_CPPFLAGS"]="-I/opt/local/include "
-S["DISTCHECK_CONFIGURE_FLAGS"]=" '--with-boost='"
-S["BOOST_ROOT"]=""
 S["LIBCURL"]="-L/opt/local/lib -lcurl -lidn -lssl -lcrypto -lssl -lcrypto -lz"
 S["LIBCURL_CPPFLAGS"]="-I/opt/local/include"
 S["_libcurl_config"]=""
@@ -1122,21 +1095,6 @@ D["STDC_HEADERS"]=" 1"
 D["HAVE__BOOL"]=" 1"
 D["HAVE_STDBOOL_H"]=" 1"
 D["TIME_WITH_SYS_TIME"]=" 1"
-D["HAVE_BOOST"]=" 1"
-D["HAVE_BOOST_SCOPED_PTR_HPP"]=" 1"
-D["HAVE_BOOST_SHARED_PTR_HPP"]=" 1"
-D["HAVE_BOOST_ALGORITHM_STRING_HPP"]=" 1"
-D["HAVE_BOOST_TOKENIZER_HPP"]=" 1"
-D["HAVE_BOOST_IOSTREAMS_DEVICE_FILE_DESCRIPTOR_HPP"]=" 1"
-D["HAVE_BOOST_GRAPH_ADJACENCY_LIST_HPP"]=" 1"
-D["HAVE_BOOST_PROGRAM_OPTIONS_HPP"]=" 1"
-D["HAVE_BOOST_SYSTEM_ERROR_CODE_HPP"]=" 1"
-D["HAVE_BOOST_SYSTEM_ERROR_CODE_HPP"]=" 1"
-D["HAVE_BOOST_THREAD_HPP"]=" 1"
-D["HAVE_BOOST_ARCHIVE_TEXT_OARCHIVE_HPP"]=" 1"
-D["HAVE_BOOST_TEST_UNIT_TEST_HPP"]=" 1"
-D["HAVE_BOOST_DATE_TIME_POSIX_TIME_POSIX_TIME_HPP"]=" 1"
-D["HAVE_BOOST_ASIO_HPP"]=" 1"
   for (key in D) D_is_set[key] = 1
   FS = ""
 }

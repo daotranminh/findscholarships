@@ -19753,7 +19753,8 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makefile html/Makefile css/Makefile"
+ac_config_files="$ac_config_files Makefile include/Makefile include/html/Makefile include/css/Makefile src/Makefile src/html/Makefile src/css/Makefile"
+
 
 ac_config_files="$ac_config_files htmlcxx.pc"
 
@@ -20864,8 +20865,12 @@ do
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "html/Makefile") CONFIG_FILES="$CONFIG_FILES html/Makefile" ;;
-    "css/Makefile") CONFIG_FILES="$CONFIG_FILES css/Makefile" ;;
+    "include/Makefile") CONFIG_FILES="$CONFIG_FILES include/Makefile" ;;
+    "include/html/Makefile") CONFIG_FILES="$CONFIG_FILES include/html/Makefile" ;;
+    "include/css/Makefile") CONFIG_FILES="$CONFIG_FILES include/css/Makefile" ;;
+    "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
+    "src/html/Makefile") CONFIG_FILES="$CONFIG_FILES src/html/Makefile" ;;
+    "src/css/Makefile") CONFIG_FILES="$CONFIG_FILES src/css/Makefile" ;;
     "htmlcxx.pc") CONFIG_FILES="$CONFIG_FILES htmlcxx.pc" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;

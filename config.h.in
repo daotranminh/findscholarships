@@ -1,5 +1,29 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Defined if the requested minimum BOOST version is satisfied */
+#undef HAVE_BOOST
+
+/* Define to 1 if you have <boost/date_time/posix_time/posix_time.hpp> */
+#undef HAVE_BOOST_DATE_TIME_POSIX_TIME_POSIX_TIME_HPP
+
+/* Define to 1 if you have <boost/iostreams/device/file_descriptor.hpp> */
+#undef HAVE_BOOST_IOSTREAMS_DEVICE_FILE_DESCRIPTOR_HPP
+
+/* Define to 1 if you have <boost/program_options.hpp> */
+#undef HAVE_BOOST_PROGRAM_OPTIONS_HPP
+
+/* Define to 1 if you have <boost/scoped_ptr.hpp> */
+#undef HAVE_BOOST_SCOPED_PTR_HPP
+
+/* Define to 1 if you have <boost/shared_ptr.hpp> */
+#undef HAVE_BOOST_SHARED_PTR_HPP
+
+/* Define to 1 if you have <boost/test/unit_test.hpp> */
+#undef HAVE_BOOST_TEST_UNIT_TEST_HPP
+
+/* Define to 1 if you have <boost/tokenizer.hpp> */
+#undef HAVE_BOOST_TOKENIZER_HPP
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 

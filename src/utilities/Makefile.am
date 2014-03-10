@@ -26,4 +26,5 @@ lib_LTLIBRARIES = libutilities.la
 
 libutilities_la_SOURCES = \
 	ConstantStrings.cpp \
+	Configuration.cpp \
 	Logger.cpp

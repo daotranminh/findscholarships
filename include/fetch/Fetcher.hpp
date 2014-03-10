@@ -7,21 +7,38 @@
 class Fetcher
 {
 public:
+  Fetcher(const std::string &path,
+	  const std::string &filename_input,
+	  const std::string &filename_output);
+
   ~Fetcher();
 
   std::string
   fetchSingle(const std::string &url);
+    
+  void
+  fetchMultiple();
 
   void
-  fetchMultiple(const std::string &filename,
-		FetchedInfoVecPtr fetched_infos);
+  fetchDbworld();
 
-  void
-  fetchDbworld(FetchedInfoVecPtr fetched_infos);
+private:
+  bool
+  getDeadlineTitleURL(std::ifstream &file_input,
+		      std::string &deadline,
+		      std::string &title,
+		      std::string &url);
+
+  const std::string 
+  currentDateTime();
 
 private:
   CURL *m_Curl;
   CURLcode m_Res;
+
+  const std::string m_Path;
+  const std::string m_FilenameInput;
+  const std::string m_FilenameOutput;
 };
 
 

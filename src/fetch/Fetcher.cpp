@@ -6,6 +6,16 @@
 
 
 
+Fetcher::Fetcher(const std::string &path,
+		 const std::string &filename_input,
+		 const std::string &filename_output)
+  : m_Path(path),
+    m_FilenameInput(filename_input),
+    m_FilenameOutput(filename_output)
+{ }
+
+
+
 Fetcher::~Fetcher()
 {
    curl_easy_cleanup(m_Curl);
@@ -63,50 +73,132 @@ Fetcher::fetchSingle(const std::string &url)
 
 
 
-void
-Fetcher::fetchMultiple(const std::string &filename,
-		       FetchedInfoVecPtr fetched_infos)
+
+bool
+Fetcher::getDeadlineTitleURL(std::ifstream& file_input,
+			     std::string &deadline,
+			     std::string &title,
+			     std::string &url)
 {
-  std::ifstream file_input(filename.c_str());
+  deadline = "";
+  title    = "";
+  url      = "";
 
-  if (!file_input.is_open())
+  std::getline(file_input, deadline);
+  if (deadline == "") return false;
+
+  // only accept deadline of the form YYYYMMDD
+  if (deadline.length() == 8)
     {
-      std::cerr << "Cannot open file \"" << filename << "\" for reading!" << std::endl;
-      return;
+      std::getline(file_input, title);
+    }
+  else
+    {
+      title = deadline;
+      deadline = "";
     }
 
-  while (file_input.good())
+  if (title.find("http://") == std::string::npos)
     {
-      std::string deadline = "";
-      std::string url = "";
-
-      std::getline(file_input, deadline);
-      if (deadline == "") return;
-
-      // only accept deadlines of the form YYYYMMDD
-      if (deadline.length() == 8)
-	{
-	  std::getline(file_input, url);
-	}
-      else
-	{
-	  url = deadline;
-	  deadline = "";
-	}
-
-      assert (url.find("http://") != std::string::npos);
-
-      FetchedInfoPtr fetched_info(new FetchedInfo(deadline, url));
-      fetched_info->m_HTMLCode = fetchSingle(url);
-      fetched_infos->push_back(fetched_info);
+      std::getline(file_input, url);
+      if (url == "") return false;
+    }
+  else
+    {
+      url = title;
+      title = "";
     }
 
-  file_input.close();
+  return true;
+}
+
+
+
+
+// Get current date/time, format is YYYY-MM-DD.HH:mm:ss
+const std::string 
+Fetcher::currentDateTime() 
+{
+  time_t     now = time(0);
+  struct tm  tstruct;
+  char       buf[80];
+  tstruct = *localtime(&now);
+
+  strftime(buf, sizeof(buf), "%Y%m%d%H%M%S", &tstruct);
+  
+  return buf;
 }
 
 
 
 void
-Fetcher::fetchDbworld(FetchedInfoVecPtr fetched_infos)
+Fetcher::fetchMultiple()
+{
+  std::ifstream file_input(m_FilenameInput.c_str());
+  std::ofstream file_output(m_FilenameOutput.c_str());
+
+  if (!file_input.is_open())
+    {
+      std::cerr << "Cannot open file \"" << m_FilenameInput << "\" for reading!" << std::endl;
+      return;
+    }
+
+  if (!file_output.is_open())
+    {
+      std::cerr << "Cannot open file \"" << m_FilenameOutput << "\" for writing!" << std::endl;
+      return;
+    }
+
+  const std::string now = currentDateTime();
+
+  std::size_t count = 0;
+  std::ostringstream count_str;
+
+  while (file_input.good())
+    {
+      std::string deadline;
+      std::string title;
+      std::string url;
+      if (!getDeadlineTitleURL(file_input, deadline, title, url)) break;
+
+      std::string html_code = fetchSingle(url);
+
+      count_str.str("");
+      count_str << count++;
+
+      std::string filename_scholarship = m_Path + now + count_str.str() + ".txt";
+      std::ofstream file_scholarship(filename_scholarship.c_str());
+      
+      if (!file_scholarship.is_open())
+	{
+	  std::cerr << "Cannot open file \"" << filename_scholarship << "\" for writing!" << std::endl;
+	}
+      else
+	{
+	  file_scholarship << html_code;
+	  file_scholarship.close();
+	      
+
+	  file_output << "__BEGIN_____" << std::endl;
+	  if (deadline != "")
+	    file_output << "__DEADLINE__=" << deadline << std::endl;
+
+	  if (title != "")
+	    file_output << "__TITLE_____=" << title << std::endl;
+
+	  file_output << "__FILENAME__=" << filename_scholarship << std::endl;
+	  file_output << "__URL_______=" << url << std::endl;
+	  file_output << "__END_______" << std::endl;
+	}
+    }
+
+  file_input.close();
+  file_output.close();
+}
+
+
+
+void
+Fetcher::fetchDbworld()
 {
 }

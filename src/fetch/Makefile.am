@@ -27,3 +27,15 @@ lib_LTLIBRARIES = libfetch.la
 libfetch_la_SOURCES = \
 	FetchedInfo.cpp \
 	Fetcher.cpp
+
+bin_PROGRAMS = fetch
+
+# the fetch binary
+fetch_SOURCES = \
+	fetch.cpp
+
+fetch_LDADD = \
+	$(top_builddir)/src/fetch/libfetch.la \
+	$(top_builddir)/src/utilities/libutilities.la \
+	@LIBCURL@
+

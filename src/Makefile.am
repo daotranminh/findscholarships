@@ -31,9 +31,9 @@ LIBS = \
 	$(LOG4CXX_LIBS)
 
 # install htmlcxx into $prefix/bin
-bin_PROGRAMS = htmlcxx
+bin_PROGRAMS = htmlcxx 
 
-# the new_dmcsd binary
+# the htmlcxx binary
 htmlcxx_SOURCES = \
 		htmlcxx.cc
 
@@ -46,3 +46,4 @@ htmlcxx_LDADD = \
 	@LIBCURL@
 
 EXTRA_DIST = wingetopt.c COPYING
+

@@ -1,4 +1,4 @@
-SUBDIRS = html css fetch
+SUBDIRS = html css fetch utilities
 
 # global preprocessor flags
 AM_CPPFLAGS = \
@@ -42,6 +42,7 @@ htmlcxx_LDADD = \
 	$(top_builddir)/src/css/libcss_parser_pp.la \
 	$(top_builddir)/src/css/libcss_parser.la \
 	$(top_builddir)/src/fetch/libfetch.la \
+	$(top_builddir)/src/utilities/libutilities.la \
 	@LIBCURL@
 
 EXTRA_DIST = wingetopt.c COPYING

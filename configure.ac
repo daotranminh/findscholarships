@@ -61,7 +61,7 @@ BOOST_TOKENIZER
 BOOST_IOSTREAMS
 #BOOST_GRAPH #right now, we don't care about the libboost-graph shared library
 BOOST_PROGRAM_OPTIONS
-#BOOST_SYSTEM
+BOOST_SYSTEM
 #BOOST_THREADS
 #BOOST_SERIALIZATION
 BOOST_TEST
@@ -80,6 +80,7 @@ AC_CONFIG_FILES([
 	src/css/Makefile
 	src/fetch/Makefile
 	src/utilities/Makefile
+	testsuite/Makefile
 ])
 
 AC_OUTPUT(htmlcxx.pc)

@@ -11,6 +11,7 @@ AM_CPPFLAGS = \
 AM_LDFLAGS = \
 	$(BOOST_SYSTEM_LDFLAGS) \
 	$(BOOST_THREAD_LDFLAGS) \
+	$(BOOST_DATE_TIME_LDFLAGS) \
 	$(BOOST_SERIALIZATION_LDFLAGS) \
 	$(BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS)
 
@@ -20,7 +21,8 @@ LIBS = \
 	$(BOOST_GRAPH_LIBS) \
 	$(BOOST_SERIALIZATION_LIBS) \
 	$(BOOST_UNIT_TEST_FRAMEWORK_LIBS) \
-	$(BOOST_SYSTEM_LIBS)
+	$(BOOST_SYSTEM_LIBS) \
+	$(BOOST_DATE_TIME_LIBS)
 
 TEST = \
 	testConfiguration
@@ -31,8 +33,11 @@ TESTS_ENVIRONMENT = \
 	BOOST_TEST_LOG_LEVEL=all
 
 check_PROGRAMS = \
-	testConfiguration
+	testBoostDateTime \
+	testConfiguration 
 
 testConfiguration_SOURCES = testConfiguration.cpp
 testConfiguration_LDADD = \
 	$(top_builddir)/src/utilities/libutilities.la
+
+testBoostDateTime_SOURCES = testBoostDateTime.cpp

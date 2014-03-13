@@ -22,10 +22,8 @@ LIBS = \
 	$(BOOST_SERIALIZATION_LIBS) 
 	$(BOOST_GRAPH_LIBS)
 
-lib_LTLIBRARIES = libutilities.la
+lib_LTLIBRARIES = libhtmlgen.la
 
-libutilities_la_SOURCES = \
-	ConstantStrings.cpp \
-	Configuration.cpp \
-	HelperFunctions.cpp \
-	Logger.cpp
+libhtmlgen_la_SOURCES = \
+	DataEntry.cpp \
+	Title.cpp

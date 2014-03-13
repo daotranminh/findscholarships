@@ -2,4 +2,5 @@
 noinst_HEADERS =  \
 	ConstantStrings.hpp \
 	Configuration.hpp \
+	HelperFunctions.hpp \
 	Logger.hpp

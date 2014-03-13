@@ -1,4 +1,4 @@
-SUBDIRS = html css fetch utilities
+SUBDIRS = html css fetch utilities htmlgen
 
 # global preprocessor flags
 AM_CPPFLAGS = \

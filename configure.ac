@@ -74,11 +74,13 @@ AC_CONFIG_FILES([
 	include/html/Makefile
 	include/css/Makefile
 	include/fetch/Makefile
+	include/htmlgen/Makefile
 	include/utilities/Makefile
 	src/Makefile 
 	src/html/Makefile 
 	src/css/Makefile
 	src/fetch/Makefile
+	src/htmlgen/Makefile
 	src/utilities/Makefile
 	testsuite/Makefile
 ])

@@ -15,4 +15,10 @@ BOOST_AUTO_TEST_CASE ( testBoostDateTime )
   std::string s2 = "24-Nov-1981";
   boost::gregorian::date d2(boost::gregorian::from_uk_string(s2));
   std::cout << boost::gregorian::to_iso_extended_string(d2) << std::endl;
+
+  boost::gregorian::months one_month(1);
+  boost::gregorian::date d3 = d2 - one_month;
+  std::cout << boost::gregorian::to_iso_extended_string(d3) << std::endl;
+
+  BOOST_CHECK_EQUAL(d3 < d2, true);
 }

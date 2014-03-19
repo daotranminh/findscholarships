@@ -1,33 +1,36 @@
 #ifndef ___DATABASE_HPP___
 #define ___DATABASE_HPP___
 
-#include <map>
 #include <vector>
+#include <map>
 
 #include <boost/date_time/gregorian/gregorian.hpp>
-#include "htmlgen/DataEntry.h"
+#include "htmlgen/DataEntry.hpp"
 
 typedef boost::gregorian::date Date_t;
+typedef std::shared_ptr<Date_t> DatePtr;
+
 struct DateCompare
 {
   bool
-  operator()(const Date_t* date1, const Date_2* date2) // date1 > date2
+  operator()(const DatePtr date1, const DatePtr date2) const // date1 > date2
   {
-    return (date1 > date2);
+    return (*date1 > *date2);
   }
-}
+};
 
 
-typedef std::multimap<Date_t*, DataEntry, DateCompare> Storage;
-typedef std::vector<Storage*> StorageVec;
+typedef std::multimap<DatePtr, DataEntry, DateCompare> Storage;
+typedef std::shared_ptr<Storage> StoragePtr;
+typedef std::vector<StoragePtr> StorageVec;
+
+
 
 class Database
 {
 public:
   Database();
 	
-  ~Database();
-  
   void 
   loadDatabase();
   
@@ -38,8 +41,8 @@ public:
   getStorages() const;
   
   void
-  insert(Storage* to_load, 
-	 Date_t* deadline, 
+  insert(StoragePtr to_load, 
+	 DatePtr deadline, 
 	 const Title& title, 
 	 const std::string& orig_link,
 	 bool is_new = false);
@@ -55,30 +58,30 @@ public:
 	
 private:
   void
-  loadDatabase(const std::string& filename, Storage* to_load);
+  loadDatabase(const std::string& filename, StoragePtr to_load);
   
-  bool
-  insertWithCheck(Storage* to_load,
-		  Date_t* deadline,
+  void
+  insertWithCheck(StoragePtr to_load,
+		  DatePtr deadline,
 		  const Title& title,
 		  const std::string& orig_link,
 		  bool is_new = false);
   
   void
   storeDatabase(const std::string& filename, 
-		Storage* to_store);
+		StoragePtr to_store);
 	
   void
   writeToCategoryFile(const std::string& filename, 
 		      const std::string& title,
-		      Storage* to_write);
+		      StoragePtr to_write);
   
   void
-  showStorage(Storage* to_show);
+  showStorage(StoragePtr to_show);
   
 private:
   StorageVec m_Storages;	
-  Date_t* m_LowerBound;
+  DatePtr    m_LowerBound;
 };
 
 

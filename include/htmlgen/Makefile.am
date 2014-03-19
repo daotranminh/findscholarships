@@ -1,5 +1,6 @@
 # including headers for make dist
 noinst_HEADERS =  \
-	DataBase.hpp \
+	Database.hpp \
 	DataEntry.hpp \
 	Title.hpp
+

@@ -241,20 +241,17 @@ Database::writeToCategoryFile(const std::string& filename,
 	  const DataEntry& data = it->second;
 	  const Title& title = data.getTitle();
 	  
-	  //	  std::string html_link = getHtmlLink(title, deadline);
-	  
 	  if (data.isNew())
 	    {
-	      //	      list_new = "<p>" + list_new + html_link + "<img src=\"images/new_icon.gif\"></p>\n\n";
+	      list_new = "<p>" + list_new + title.getHtmlLink(deadline) + "<img src=\"images/new_icon.gif\"></p>\n\n";
 	    }
 	  else
 	    {
-	      //	      list_old = "<p>" + list_old + html_link + "</p>\n\n";
+	      list_old = "<p>" + list_old + title.getHtmlLink(deadline) + "</p>\n\n";
 	    }
-
 	}
       
-      //      out << list_new << list_old << std::endl;
+      out << list_new << list_old << std::endl;
       out << Configuration::instance()->categoryPart4() << std::endl;
       out.close();
     }
@@ -273,8 +270,7 @@ Database::writeNotification(bool single_line)
 {
   StoragePtr homepage = m_Storages[IDX_HOMEPAGE];
 	
-  //  std::string filename = Configuration::instance()->pathDatabase() + currentDateTime();
-  std::string filename = "AAA.txt";
+  std::string filename = Configuration::instance()->pathDatabase() + currentDateTime();
   if (single_line)
     {
       filename = filename + ".single";
@@ -298,11 +294,11 @@ Database::writeNotification(bool single_line)
 	    {
 	      if (single_line)
 		{
-		  //		  file_notification << getSingleLineNotification(data.getTitle(), deadline) << std::endl << std::endl;
+		  file_notification << data.getTitle().getSingleLineNotification(deadline) << std::endl << std::endl;
 		}
 	      else 
 		{
-		  //		  file_notification << getMultipleLineNotification(data.getTitle(), deadline) << std::endl << std::endl;
+		  file_notification << data.getTitle().getMultipleLineNotification(deadline) << std::endl << std::endl;
 		}
 	    }
 	}
@@ -313,11 +309,11 @@ Database::writeNotification(bool single_line)
 	{
 	  if (single_line)
 	    {
-	      //	      file_notification << getSingleLineNotification(data.getTitle(), deadline) << std::endl << std::endl;
+	      file_notification << data.getTitle().getSingleLineNotification(deadline) << std::endl << std::endl;
 	    }
 	  else 
 	    {
-	      //	      file_notification << getMultipleLineNotification(data.getTitle(), deadline) << std::endl << std::endl;
+	      file_notification << data.getTitle().getMultipleLineNotification(deadline) << std::endl << std::endl;
 	    }
 	}		
     }

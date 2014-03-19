@@ -4,11 +4,7 @@
 #include <vector>
 #include <map>
 
-#include <boost/date_time/gregorian/gregorian.hpp>
 #include "htmlgen/DataEntry.hpp"
-
-typedef boost::gregorian::date Date_t;
-typedef std::shared_ptr<Date_t> DatePtr;
 
 struct DateCompare
 {

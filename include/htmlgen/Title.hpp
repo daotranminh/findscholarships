@@ -2,6 +2,10 @@
 #define ___TITLE_HPP___
 
 #include <string>
+#include <boost/date_time/gregorian/gregorian.hpp>
+
+typedef boost::gregorian::date Date_t;
+typedef std::shared_ptr<Date_t> DatePtr;
 
 class Title
 {
@@ -49,6 +53,26 @@ public:
   std::string
   getTitleNoSpace() const;
   
+  std::string
+  getFilename(const DatePtr deadline) const;
+
+  std::string
+  getHtmlLink(const DatePtr deadline) const;
+
+  std::string
+  getSingleLineNotification(const DatePtr deadline) const;
+
+  std::string
+  getMultipleLineNotification(const DatePtr deadline) const;
+  
+private:
+  std::string
+  getNotification(const DatePtr deadline,
+		  const std::string &delim) const;
+
+  std::string
+  getLink(const DatePtr deadline) const;
+
 private:
   std::string m_Title;
 };

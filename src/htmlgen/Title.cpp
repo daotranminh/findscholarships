@@ -168,3 +168,52 @@ Title::getTitleNoSpace() const
 	
   return tmp;
 }
+
+
+
+std::string
+Title::getFilename(const DatePtr deadline) const
+{
+  return ( strCategory() + "/" + boost::gregorian::to_iso_string(*deadline) + "-" + getTitleNoSpace() + ".html" );
+}
+
+
+
+std::string
+Title::getHtmlLink(const DatePtr deadline) const
+{
+  return ( "<a href=\"" + getFilename(deadline) + "\">" + m_Title + "</a> <small>[Deadline: " + boost::gregorian::to_simple_string(*deadline) + "]</small>" );
+}
+
+
+
+std::string
+Title::getSingleLineNotification(const DatePtr deadline) const
+{
+  return getNotification(deadline, ". ");
+}
+
+
+
+std::string
+Title::getMultipleLineNotification(const DatePtr deadline) const
+{
+  return getNotification(deadline, "\n\n");
+}
+
+
+
+std::string
+Title::getNotification(const DatePtr deadline,
+		const std::string &delim) const
+{
+  return (m_Title + delim + "Deadline: " + boost::gregorian::to_simple_string(*deadline) + delim + getLink(deadline));	
+}
+
+
+
+std::string
+Title::getLink(const DatePtr deadline) const
+{
+  return ( Configuration::instance()->rootDomain() + getFilename(deadline) );
+}

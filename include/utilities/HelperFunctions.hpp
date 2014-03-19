@@ -16,4 +16,7 @@ void
 strTrim(std::string& s);
 
 
+const std::string 
+currentDateTime();
+
 #endif // ___HELPER_FUNCTIONS_HPP___

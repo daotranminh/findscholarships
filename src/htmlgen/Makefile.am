@@ -2,7 +2,8 @@
 AM_CPPFLAGS = \
     -I$(top_srcdir)/include \
     -I$(top_srcdir) \
-    $(BOOST_CPPFLAGS)
+    $(BOOST_CPPFLAGS) \
+    @LIBCURL_CPPFLAGS@
 
 # global linker flags
 AM_LDFLAGS = \
@@ -28,3 +29,4 @@ libhtmlgen_la_SOURCES = \
 	Database.cpp \
 	DataEntry.cpp \
 	Title.cpp
+

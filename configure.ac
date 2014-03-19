@@ -39,7 +39,7 @@ AC_CHECK_LIB(iconv, iconv_open)
 
 # Checks for header files.
 AC_HEADER_STDC
-# AC_CHECK_HEADERS([])
+AC_CHECK_HEADERS([])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -56,17 +56,17 @@ CXXFLAGS="$CXXFLAGS -DDEFAULT_CSS=\"\\\"$datadir/htmlcxx/css/default.css\\\"\""
 # checking for boost libs
 BOOST_REQUIRE([1.43.0])
 BOOST_SMART_PTR
-#BOOST_STRING_ALGO
+BOOST_STRING_ALGO
 BOOST_TOKENIZER
 BOOST_IOSTREAMS
-#BOOST_GRAPH #right now, we don't care about the libboost-graph shared library
+BOOST_GRAPH #right now, we don't care about the libboost-graph shared library
 BOOST_PROGRAM_OPTIONS
 BOOST_SYSTEM
 #BOOST_THREADS
-#BOOST_SERIALIZATION
+BOOST_SERIALIZATION
 BOOST_TEST
 BOOST_DATE_TIME
-#BOOST_ASIO
+BOOST_ASIO
 
 AC_CONFIG_FILES([
 	Makefile

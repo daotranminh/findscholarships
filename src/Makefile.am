@@ -1,11 +1,10 @@
-SUBDIRS = html css fetch utilities htmlgen
+SUBDIRS = html css utilities fetch htmlgen
 
 # global preprocessor flags
 AM_CPPFLAGS = \
     -I$(top_srcdir)/include \
     -I$(top_srcdir) \
     $(BOOST_CPPFLAGS) \
-    -DNO_GMP \
     @LIBCURL_CPPFLAGS@
 
 

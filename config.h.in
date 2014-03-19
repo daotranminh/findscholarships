@@ -3,8 +3,20 @@
 /* Defined if the requested minimum BOOST version is satisfied */
 #undef HAVE_BOOST
 
+/* Define to 1 if you have <boost/algorithm/string.hpp> */
+#undef HAVE_BOOST_ALGORITHM_STRING_HPP
+
+/* Define to 1 if you have <boost/archive/text_oarchive.hpp> */
+#undef HAVE_BOOST_ARCHIVE_TEXT_OARCHIVE_HPP
+
+/* Define to 1 if you have <boost/asio.hpp> */
+#undef HAVE_BOOST_ASIO_HPP
+
 /* Define to 1 if you have <boost/date_time/posix_time/posix_time.hpp> */
 #undef HAVE_BOOST_DATE_TIME_POSIX_TIME_POSIX_TIME_HPP
+
+/* Define to 1 if you have <boost/graph/adjacency_list.hpp> */
+#undef HAVE_BOOST_GRAPH_ADJACENCY_LIST_HPP
 
 /* Define to 1 if you have <boost/iostreams/device/file_descriptor.hpp> */
 #undef HAVE_BOOST_IOSTREAMS_DEVICE_FILE_DESCRIPTOR_HPP

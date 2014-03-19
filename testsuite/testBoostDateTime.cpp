@@ -18,7 +18,8 @@ BOOST_AUTO_TEST_CASE ( testBoostDateTime )
 
   boost::gregorian::months one_month(1);
   boost::gregorian::date d3 = d2 - one_month;
-  std::cout << boost::gregorian::to_iso_extended_string(d3) << std::endl;
+  std::shared_ptr<boost::gregorian::date> d3_ptr = std::make_shared<boost::gregorian::date>(d3);
+  std::cout << boost::gregorian::to_iso_extended_string(*d3_ptr) << std::endl;
 
   BOOST_CHECK_EQUAL(d3 < d2, true);
 }

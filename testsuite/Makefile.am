@@ -25,7 +25,9 @@ LIBS = \
 	$(BOOST_DATE_TIME_LIBS)
 
 TEST = \
-	testConfiguration
+	testBoostDateTime \
+	testConfiguration \
+	testDatabase
 
 TESTS_ENVIRONMENT = \
 	EXAMPLESDIR=$(top_srcdir)/examples \
@@ -34,10 +36,19 @@ TESTS_ENVIRONMENT = \
 
 check_PROGRAMS = \
 	testBoostDateTime \
-	testConfiguration 
+	testConfiguration \
+	testDatabase
+
+
+testBoostDateTime_SOURCES = testBoostDateTime.cpp
+
 
 testConfiguration_SOURCES = testConfiguration.cpp
 testConfiguration_LDADD = \
 	$(top_builddir)/src/utilities/libutilities.la
 
-testBoostDateTime_SOURCES = testBoostDateTime.cpp
+
+testDatabase_SOURCES = testDatabase.cpp
+testDatabase_LDADD = \
+	$(top_builddir)/src/utilities/libutilities.la \
+	$(top_builddir)/src/htmlgen/libhtmlgen.la

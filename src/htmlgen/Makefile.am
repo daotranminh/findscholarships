@@ -28,5 +28,6 @@ lib_LTLIBRARIES = libhtmlgen.la
 libhtmlgen_la_SOURCES = \
 	Database.cpp \
 	DataEntry.cpp \
+	HtmlResult.cpp \
 	Title.cpp
 

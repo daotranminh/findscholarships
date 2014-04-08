@@ -2,5 +2,6 @@
 noinst_HEADERS =  \
 	Database.hpp \
 	DataEntry.hpp \
+	HtmlResult.hpp \
 	Title.hpp
 

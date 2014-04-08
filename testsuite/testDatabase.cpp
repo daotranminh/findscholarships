@@ -85,6 +85,27 @@ check_file_length(std::size_t db_index)
     number_entries = 2;
   else
     number_entries = 12;
+
+  std::size_t entry_size = 3;
+
+  std::ifstream db_file(filename.c_str());
+  if (!db_file.is_open())
+    {
+      DBGERR("Could not open file " << filename << "!")
+      return;
+    }
+
+  std::string line;
+  std::size_t line_count = 0;
+  while (db_file.good())
+    {
+      std::getline(db_file, line);
+      line_count++;
+    }
+  
+  db_file.close();
+
+  BOOST_CHECK_EQUAL(line_count-1, number_entries*entry_size);
 }
 
 

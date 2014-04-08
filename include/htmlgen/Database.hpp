@@ -37,6 +37,14 @@ public:
   getStorages() const;
   
   void
+  insert(std::size_t storage_index, 
+	 DatePtr deadline, 
+	 const Title& title, 
+	 const std::string& orig_link,
+	 bool is_new = false);
+
+
+  void
   insert(StoragePtr to_load, 
 	 DatePtr deadline, 
 	 const Title& title, 

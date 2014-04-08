@@ -54,7 +54,10 @@ Database::loadDatabase()
 {
   const StringVec& path_storages = Configuration::instance()->pathStorages();
 
-  for (std::size_t i = 0; i < TOTAL_STORAGES; ++i)
+  // we don't need to load the homepage's database,
+  // as whenever we load a category's database, the data entry
+  // is also inserted into the homepage's database.
+  for (std::size_t i = 0; i < TOTAL_STORAGES-1; ++i)
     {
       loadDatabase(path_storages[i], m_Storages[i]);
     }
@@ -131,6 +134,20 @@ Database::storeDatabase(const std::string& filename, StoragePtr to_store)
     {
       DBGERR(__FUNCTION__ << ": Cannot open file \"" << filename << "\" to store database on disk!")
     }
+}
+
+
+
+void
+Database::insert(std::size_t storage_index, 
+		 DatePtr deadline, 
+		 const Title& title, 
+		 const std::string& orig_link,
+		 bool is_new /* = false */)
+{
+  assert (storage_index < TOTAL_STORAGES);
+  StoragePtr to_load = m_Storages[storage_index];
+  insert(to_load, deadline, title, orig_link, is_new);
 }
 
 

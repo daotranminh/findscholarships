@@ -17,6 +17,9 @@ public:
   const HtmlResult&
   getHtmlResult();
   
+  virtual
+  ~HtmlGenBase();
+
 protected:
   void
   readFileAndParse(const std::string &filename, 
@@ -41,7 +44,6 @@ protected:
   {
     delimeter = "";
   }
-  
   
 protected:
   tree<HTML::Node> m_Dom;

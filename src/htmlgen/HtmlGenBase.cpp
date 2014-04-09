@@ -131,3 +131,6 @@ HtmlGenBase::cleanTag(std::string &node_content,
 
 
 
+HtmlGenBase::~HtmlGenBase()
+{ }
+

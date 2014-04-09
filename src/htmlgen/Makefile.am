@@ -28,7 +28,8 @@ lib_LTLIBRARIES = libhtmlgen.la
 libhtmlgen_la_SOURCES = \
 	Database.cpp \
 	DataEntry.cpp \
-	HtmlGenBase.cpp
+	HtmlGenBase.cpp \
+	HtmlGenScholarshipsLinks.cpp \
 	HtmlResult.cpp \
 	Title.cpp
 

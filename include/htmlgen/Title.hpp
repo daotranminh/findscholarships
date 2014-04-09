@@ -57,6 +57,9 @@ public:
   getFilename(const DatePtr deadline) const;
 
   std::string
+  getFileLocation(const DatePtr deadline) const;
+
+  std::string
   getHtmlLink(const DatePtr deadline) const;
 
   std::string

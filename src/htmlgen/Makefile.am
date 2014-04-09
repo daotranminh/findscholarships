@@ -32,5 +32,6 @@ libhtmlgen_la_SOURCES = \
 	HtmlGenScholarshipPosition.cpp \
 	HtmlGenScholarshipsLinks.cpp \
 	HtmlResult.cpp \
+	Manager.cpp \
 	Title.cpp
 

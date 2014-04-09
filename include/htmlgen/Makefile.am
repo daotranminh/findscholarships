@@ -6,5 +6,6 @@ noinst_HEADERS =  \
 	HtmlGenScholarshipPosition.hpp \
 	HtmlGenScholarshipsLinks.hpp \
 	HtmlResult.hpp \
+	Manager.hpp \
 	Title.hpp
 

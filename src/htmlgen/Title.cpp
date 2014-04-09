@@ -180,6 +180,14 @@ Title::getFilename(const DatePtr deadline) const
 
 
 std::string
+Title::getFileLocation(const DatePtr deadline) const
+{
+  return ( Configuration::instance()->pathProductionRoot() + getFilename(deadline) );
+}
+
+
+
+std::string
 Title::getHtmlLink(const DatePtr deadline) const
 {
   return ( "<a href=\"" + getFilename(deadline) + "\">" + m_Title + "</a> <small>[Deadline: " + boost::gregorian::to_simple_string(*deadline) + "]</small>" );

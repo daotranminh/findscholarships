@@ -1,6 +1,7 @@
 #include "html/Node.h"
 #include "htmlgen/HtmlGenScholarshipsLinks.hpp"
 #include "utilities/HelperFunctions.hpp"
+#include "utilities/Logger.hpp"
 
 using namespace htmlcxx;
 
@@ -48,7 +49,7 @@ HtmlGenScholarshipsLinks::generate(DatePtr &deadline,
 		  if (std::string::npos != ct.find(deadline_sign))
 		    {
 		      if (deadline.get() == NULL)
-			{						
+			{		
 			  // For ScholarshipLinks, this is normally the case, as the deadline is standardized.
 			  tree<HTML::Node>::iterator beg_deadline = content_it.begin();
 			  tree<HTML::Node>::iterator end_deadline = content_it.end();
@@ -60,6 +61,7 @@ HtmlGenScholarshipsLinks::generate(DatePtr &deadline,
 			      if (std::string::npos != ct.find(deadline_sign))
 				{										
 				  str_deadline = deadline_it->text();
+				  extractDeadline(str_deadline);
 				  break; // got the deadline, done
 				}
 			    }
@@ -76,7 +78,7 @@ HtmlGenScholarshipsLinks::generate(DatePtr &deadline,
   
   if (deadline.get() == NULL)
     {
-      Date_t dl(boost::gregorian::from_undelimited_string(str_deadline));
+      Date_t dl(boost::gregorian::from_uk_string(str_deadline));
       deadline = std::make_shared<Date_t>(dl);
      }
   
@@ -97,4 +99,37 @@ HtmlGenScholarshipsLinks::cleanUp(std::string &s)
 {
   strReplace(s, " : ", ": ");
   strReplace(s, " - Scholarships-Links.com", "");
+}
+
+
+
+void
+HtmlGenScholarshipsLinks::extractDeadline(std::string &date_representation)
+{
+  std::vector<std::string> redundants;
+  redundants.push_back("Application Deadline :");
+  redundants.push_back("Application Deadline:");
+  
+  for (std::vector<std::string>::const_iterator it = redundants.begin(); it != redundants.end(); ++it)
+    {
+      std::size_t pos = date_representation.find(*it);
+      if (pos != std::string::npos)
+	{
+	  date_representation = date_representation.substr(pos + it->length());
+	}
+    }
+  
+  // string normalization
+  while (date_representation[0] == ' ')
+    {
+      date_representation = date_representation.substr(1);
+    }
+  
+  while (date_representation[date_representation.length()-1] == ' ')
+    {
+      date_representation = date_representation.substr(0, date_representation.length()-1);
+    }
+
+  while (date_representation.find(" ") != std::string::npos)
+    strReplace(date_representation, " ", "-");
 }

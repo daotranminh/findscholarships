@@ -14,6 +14,9 @@ public:
 private:
   void
   cleanUp(std::string &s);
+
+  void
+  extractDeadline(std::string &date_representation);
 };
 
 

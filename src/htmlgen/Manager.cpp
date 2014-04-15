@@ -74,7 +74,7 @@ Manager::processBatch(const std::string &file_url_collection,
     {
       while (file_input.good()) 
 	{
-	  DatePtr deadline;
+	  DatePtr deadline(NULL);
 	  std::string title = "";
 	  std::string filename = "";
 	  std::string url = "";
@@ -105,16 +105,16 @@ Manager::processSingle(DatePtr &deadline,
 		       const std::string &url, 
 		       Database &db)
 {
-  //DBGDEBUG("processSingle: deadline = " << deadline << ", title = " << str_title);
+  DBGDEBUG(__FUNCTION__ << ": deadline = " << deadline << ", title = " << str_title);
   HtmlGenBase* generator = getGenerator(url);
   assert (generator != NULL);
-  
-  
+
   generator->process(deadline, str_title, filename);
   const HtmlResult& result = generator->getHtmlResult();
   
   if (result.getDeadline().get() != NULL)
     {
+      DBGDEBUG(__FUNCTION__ << ": deadline = " << deadline << ", title = " << str_title);
       // write to files
       const std::string& full_html_code = result.getFullHtmlCode();
       std::string full_path = result.getTitle().getFileLocation(result.getDeadline());

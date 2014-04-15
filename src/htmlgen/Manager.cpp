@@ -105,7 +105,6 @@ Manager::processSingle(DatePtr &deadline,
 		       const std::string &url, 
 		       Database &db)
 {
-  DBGDEBUG(__FUNCTION__ << ": deadline = " << deadline << ", title = " << str_title);
   HtmlGenBase* generator = getGenerator(url);
   assert (generator != NULL);
 
@@ -114,7 +113,6 @@ Manager::processSingle(DatePtr &deadline,
   
   if (result.getDeadline().get() != NULL)
     {
-      DBGDEBUG(__FUNCTION__ << ": deadline = " << deadline << ", title = " << str_title);
       // write to files
       const std::string& full_html_code = result.getFullHtmlCode();
       std::string full_path = result.getTitle().getFileLocation(result.getDeadline());

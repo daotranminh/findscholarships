@@ -30,13 +30,13 @@ LIBS = \
 	$(LOG4CXX_LIBS)
 
 # install htmlcxx into $prefix/bin
-bin_PROGRAMS = htmlcxx 
+bin_PROGRAMS = findscholarship
 
 # the htmlcxx binary
-htmlcxx_SOURCES = \
-		htmlcxx.cc
+findscholarship_SOURCES = \
+		findscholarship.cpp
 
-htmlcxx_LDADD = \
+findscholarship_LDADD = \
 	$(top_builddir)/src/html/libhtmlcxx.la \
 	$(top_builddir)/src/css/libcss_parser_pp.la \
 	$(top_builddir)/src/css/libcss_parser.la \

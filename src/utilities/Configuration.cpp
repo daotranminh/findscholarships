@@ -174,6 +174,31 @@ Configuration::pathExpired()
 }
 
 
+
+const std::string&
+Configuration::inputLinks()
+{
+  return filename_input_links;
+}
+
+
+
+const std::string&
+Configuration::inputFetched()
+{
+  return filename_input_fetched;
+}
+
+
+const std::string&
+Configuration::pathTemp()
+{
+  return path_temp;
+}
+
+
+
+
 std::string
 Configuration::readLine(const std::string& filename, const std::string& key)
 {
@@ -238,7 +263,10 @@ Configuration::readConfig(const std::string& filename)
   path_database = path_root + readLine(filename, "DIR_DATABASE");
   path_images = path_root + readLine(filename, "DIR_IMAGES");
   path_expired = path_database + readLine(filename, "EXPIRED");
-  root_domain = readLine(filename, "ROOT_DOMAIN");	
+  path_temp = path_root + readLine(filename, "DIR_TEMP");
+  root_domain = readLine(filename, "ROOT_DOMAIN");
+  filename_input_links = readLine(filename, "INPUT_LINKS");
+  filename_input_fetched = readLine(filename, "INPUT_FETCHED");
   
   path_storages.reserve(TOTAL_STORAGES);
   

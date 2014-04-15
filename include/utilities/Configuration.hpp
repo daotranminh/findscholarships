@@ -81,6 +81,15 @@ public:
   const std::string&
   pathExpired();
   
+  const std::string&
+  inputLinks();
+
+  const std::string&
+  inputFetched();
+
+  const std::string&
+  pathTemp();
+
 private:
   Configuration();
   
@@ -100,6 +109,10 @@ private:
   std::string root_domain;           // http://blabla.com/findscholarships/	
   std::string path_images;
   std::string path_expired;
+  std::string path_temp;
+
+  std::string filename_input_links;
+  std::string filename_input_fetched;
   
   StringVec path_storages;
   StringVec category_titles;

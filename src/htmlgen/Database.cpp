@@ -78,7 +78,7 @@ Database::loadDatabase(const std::string& filename, StoragePtr to_load)
 	  std::getline(inp, line);
 	  if (line == "") break;
 	  
-	  Date_t deadline = boost::gregorian::from_undelimited_string(line);
+	  Date_t deadline = boost::gregorian::from_simple_string(line);
 	  DatePtr deadline_ptr = std::make_shared<Date_t>(deadline);
 	  
 	  std::getline(inp, line);

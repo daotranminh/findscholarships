@@ -18,7 +18,6 @@ main (int argc, const char *argv[])
   DBGINIT(std::cerr, Logger::INFO | Logger::ERRO | Logger::VERB | Logger::DEBU)
 	
   std::string config_filename = "/Users/minhdt/Documents/Study/findscholarships-website/config.cfg";
-  std::string input_filename = "/Users/minhdt/Documents/Study/findscholarships-website/tmp/crawled_input.txt";
   
   DBGINFO("Read config")
     
@@ -32,7 +31,7 @@ main (int argc, const char *argv[])
   
   DBGINFO("Process batch")
   Manager man;	
-  man.processBatch(input_filename, db);
+  man.processBatch(config->pathTemp() + config->inputFetched(), db);
   
   DBGINFO("Finish!")
     

@@ -16,6 +16,10 @@ int main()
 
   DBGINFO("Fetching starts...");
 
+  DBGDEBUG("pathTemp     = " << config->pathTemp())
+  DBGDEBUG("inputLinks   = " << config->inputLinks())
+  DBGDEBUG("inputFetched = " << config->inputFetched())
+
   Fetcher fc(config->pathTemp(), config->inputLinks(), config->inputFetched());
   fc.fetchMultiple();
 

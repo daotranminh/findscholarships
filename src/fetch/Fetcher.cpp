@@ -10,8 +10,8 @@ Fetcher::Fetcher(const std::string &path,
 		 const std::string &filename_input,
 		 const std::string &filename_output)
   : m_Path(path),
-    m_FilenameInput(filename_input),
-    m_FilenameOutput(filename_output)
+    m_FilenameInput(path + filename_input),
+    m_FilenameOutput(path + filename_output)
 { }
 
 

@@ -263,7 +263,7 @@ Configuration::readConfig(const std::string& filename)
   path_database = path_root + readLine(filename, "DIR_DATABASE");
   path_images = path_root + readLine(filename, "DIR_IMAGES");
   path_expired = path_database + readLine(filename, "EXPIRED");
-  path_temp = path_root + readLine(filename, "DIR_TEMP");
+  path_temp = path_root + readLine(filename, "DIR_TEMPORARY");
   root_domain = readLine(filename, "ROOT_DOMAIN");
   filename_input_links = readLine(filename, "INPUT_LINKS");
   filename_input_fetched = readLine(filename, "INPUT_FETCHED");

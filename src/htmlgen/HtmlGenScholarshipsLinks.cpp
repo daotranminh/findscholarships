@@ -130,6 +130,5 @@ HtmlGenScholarshipsLinks::extractDeadline(std::string &date_representation)
       date_representation = date_representation.substr(0, date_representation.length()-1);
     }
 
-  while (date_representation.find(" ") != std::string::npos)
-    strReplace(date_representation, " ", "-");
+  strReplace(date_representation, " ", "-");
 }

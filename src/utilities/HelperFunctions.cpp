@@ -22,9 +22,10 @@ strReplace(std::string& s,
 	   const std::string& target)
 {
   std::size_t pos = s.find(source);
-  if (pos != std::string::npos)
+  while (pos != std::string::npos)
     {
       s.replace(pos, source.length(), target);
+      pos = s.find(source);
     }
 }
 
@@ -62,4 +63,15 @@ currentDateTime()
   strftime(buf, sizeof(buf), "%Y%m%d%H%M%S", &tstruct);
   
   return buf;
+}
+
+
+
+void
+extractLink(std::string &s)
+{
+  // s is of the form: <A HREF=link>
+  strReplace(s, "\"", "");
+  strReplace(s, "<A HREF=", "");
+  strReplace(s, ">", "");
 }

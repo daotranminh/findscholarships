@@ -19,4 +19,8 @@ strTrim(std::string& s);
 const std::string 
 currentDateTime();
 
+
+void
+extractLink(std::string &s);
+
 #endif // ___HELPER_FUNCTIONS_HPP___

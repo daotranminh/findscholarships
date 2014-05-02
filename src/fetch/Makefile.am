@@ -35,6 +35,7 @@ fetch_SOURCES = \
 	fetch.cpp
 
 fetch_LDADD = \
+	$(top_builddir)/src/html/libhtmlcxx.la \
 	$(top_builddir)/src/fetch/libfetch.la \
 	$(top_builddir)/src/utilities/libutilities.la \
 	@LIBCURL@

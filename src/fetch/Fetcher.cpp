@@ -1,9 +1,14 @@
 #include "fetch/Fetcher.hpp"
+#include "html/ParserDom.h"
+#include "utilities/HelperFunctions.hpp"
+
 #include <assert.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <boost/date_time/gregorian/gregorian.hpp>
 
+using namespace htmlcxx;
 
 
 Fetcher::Fetcher(const std::string &path,
@@ -201,4 +206,98 @@ Fetcher::fetchMultiple()
 void
 Fetcher::fetchDbworld()
 {
+  std::string dbworld = fetchSingle("https://research.cs.wisc.edu/dbworld/browse.html");
+  HTML::ParserDom parser;
+  tree<HTML::Node> dom = parser.parseTree(dbworld);
+  
+  for (tree<HTML::Node>::iterator table_it = dom.begin(); table_it != dom.end(); ++table_it)
+    {
+      if (table_it->tagName() == "TABLE")
+	{
+	  tree<HTML::Node>::iterator beg_table = table_it.begin();
+	  tree<HTML::Node>::iterator end_table = table_it.end();
+
+	  // Table structure:
+	  // - (0) Sent (upload date)
+	  // + (1) Message Type
+	  // - (2) From
+	  // + (3) Subject
+	  // + (4) Deadline
+	  // + (5) Web Page
+
+	  bool is_head = true;
+	  int c = 0;
+	  for (tree<HTML::Node>::iterator row_it = beg_table; row_it != end_table; ++row_it)
+	    {
+	      if (row_it->tagName() == "TR")
+		{
+		  if (is_head) is_head = false;
+		  else
+		    {
+		      // at a row with content
+		      tree<HTML::Node>::iterator beg_row = row_it.begin();
+		      tree<HTML::Node>::iterator end_row = row_it.end();
+
+		      std::size_t index = 0;
+		      bool move_on = 0;
+
+		      std::string type = "";
+		      std::string title = "";
+		      std::string url = "";
+		      std::string deadline = "";
+		      std::string website = "";
+
+		      for (tree<HTML::Node>::iterator column_it = beg_row; column_it  != end_row; column_it++)
+			{
+			  if (column_it->tagName() == "TD")
+			    {		
+			      move_on = 1;
+			      switch (index++)
+				{
+				case 1: // type: journal CFP | conf. ann. | ***job ann.*** | news | soft. ann.
+				  {
+				    type = column_it->content(dbworld);
+				    if (type != "job ann. ") move_on = -1;
+				    break;
+				  }
+				case 3:
+				  {
+				    tree<HTML::Node>::iterator url_it = column_it.begin();
+				    url = url_it->text();
+				    extractLink(url);
+				    title = url_it->content(dbworld);
+				    break;
+				  }
+				case 4:
+				  {
+				    deadline = column_it->content(dbworld);
+				    boost::gregorian::date d(boost::gregorian::from_uk_string(deadline));
+				    deadline = boost::gregorian::to_iso_string(d);
+				    break;
+				  }
+				case 5:
+				  {
+				    tree<HTML::Node>::iterator link_it = column_it.begin();
+				    website = link_it->text();
+				    extractLink(website);
+				    break;
+				  }
+				}
+
+			      if (move_on == -1) break;
+			    }
+			}
+
+		      if (move_on == 1) // write to file
+			{
+			}
+
+		      c++;
+		      if (c == 15) break;
+		    }
+		}
+	    }
+	  break;
+	}
+    }
 }

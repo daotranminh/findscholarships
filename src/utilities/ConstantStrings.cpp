@@ -8,6 +8,7 @@ ConstantStrings::ConstantStrings()
   PrefixTitle("__TITLE_____="),
   PrefixFilename("__FILENAME__="),
   PrefixURL("__URL_______="),
+  PrefixWebpage("__WEBPAGE___="),
   PrefixEnd("__END_______")
 {
   std::string sign1 = "application deadline is: ";

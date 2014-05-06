@@ -16,6 +16,7 @@ public:
   std::string PrefixTitle;
   std::string PrefixFilename;
   std::string PrefixURL;
+  std::string PrefixWebpage;
   std::string PrefixEnd;
 	
   std::vector<std::string> DeadlineSigns;

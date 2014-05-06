@@ -88,6 +88,15 @@ public:
   inputFetched();
 
   const std::string&
+  markerDbworld();
+
+  const std::string&
+  inputDbworld()
+  {
+    return filename_input_dbworld;
+  }
+
+  const std::string&
   pathTemp();
 
 private:
@@ -113,6 +122,8 @@ private:
 
   std::string filename_input_links;
   std::string filename_input_fetched;
+  std::string filename_marker_dbworld;
+  std::string filename_input_dbworld;
   
   StringVec path_storages;
   StringVec category_titles;

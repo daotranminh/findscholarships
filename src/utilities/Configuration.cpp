@@ -191,6 +191,13 @@ Configuration::inputFetched()
 
 
 const std::string&
+Configuration::markerDbworld()
+{
+  return filename_marker_dbworld;
+}
+
+
+const std::string&
 Configuration::pathTemp()
 {
   return path_temp;
@@ -267,6 +274,8 @@ Configuration::readConfig(const std::string& filename)
   root_domain = readLine(filename, "ROOT_DOMAIN");
   filename_input_links = readLine(filename, "INPUT_LINKS");
   filename_input_fetched = readLine(filename, "INPUT_FETCHED");
+  filename_marker_dbworld = readLine(filename, "MARKER_DBWORLD");
+  filename_input_dbworld = readLine(filename, "INPUT_DBWORLD");
   
   path_storages.reserve(TOTAL_STORAGES);
   

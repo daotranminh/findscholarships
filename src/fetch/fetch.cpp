@@ -20,7 +20,13 @@ int main()
   DBGDEBUG("inputLinks   = " << config->inputLinks())
   DBGDEBUG("inputFetched = " << config->inputFetched())
 
-  Fetcher fc(config->pathTemp(), config->inputLinks(), config->inputFetched());
+  Fetcher fc(config->pathTemp(),
+	     config->pathDatabase(),
+	     config->inputLinks(), 
+	     config->inputFetched(),
+	     config->markerDbworld(),
+	     config->inputDbworld());
+
   fc.fetchMultiple();
 
   DBGINFO("Fetching finished...");

@@ -1,5 +1,6 @@
 #include "fetch/Fetcher.hpp"
 #include "html/ParserDom.h"
+#include "utilities/ConstantStrings.hpp"
 #include "utilities/HelperFunctions.hpp"
 
 #include <assert.h>
@@ -12,11 +13,16 @@ using namespace htmlcxx;
 
 
 Fetcher::Fetcher(const std::string &path,
+		 const std::string &pathDatabase,
 		 const std::string &filename_input,
-		 const std::string &filename_output)
+		 const std::string &filename_output,
+		 const std::string &filename_marker_dbworld,
+		 const std::string &filename_input_dbworld)
   : m_Path(path),
     m_FilenameInput(path + filename_input),
-    m_FilenameOutput(path + filename_output)
+    m_FilenameOutput(path + filename_output),
+    m_FilenameMarkerDbworld(pathDatabase + filename_marker_dbworld),
+    m_FilenameInputDbworld(pathDatabase + filename_input_dbworld)
 { }
 
 
@@ -203,13 +209,83 @@ Fetcher::fetchMultiple()
 
 
 
+
+FetchedInfoScholarship
+Fetcher::lastCrawledDbworldJob()
+{
+  FetchedInfoScholarship result;
+
+  std::ifstream file_marker_dbworld(m_FilenameMarkerDbworld.c_str());
+  if (file_marker_dbworld.good())
+    {
+      ConstantStrings* constrings = ConstantStrings::instance();
+      std::string line;
+      std::getline(file_marker_dbworld, line);
+      
+
+      assert (line.compare(constrings->PrefixBegin) == 0);
+      std::getline(file_marker_dbworld, line);
+
+      while (line != "" && line.compare(constrings->PrefixEnd) != 0)
+	{
+	  if (line.find(constrings->PrefixDeadline) != std::string::npos) result.m_Deadline = line.substr(constrings->PrefixDeadline.length());
+	  if (line.find(constrings->PrefixTitle) != std::string::npos)    result.m_Title = line.substr(constrings->PrefixTitle.length());
+	  if (line.find(constrings->PrefixURL) != std::string::npos)      result.m_URL = line.substr(constrings->PrefixURL.length());
+	  if (line.find(constrings->PrefixWebpage) != std::string::npos)  result.m_Webpage = line.substr(constrings->PrefixWebpage.length());
+	}
+
+      file_marker_dbworld.close();
+    }
+
+  return result;
+}
+
+
+
+void
+Fetcher::cacheCrawledDbworldJob(const FetchedInfoScholarship &fis)
+{
+  std::ofstream file_marker_dbworld(m_FilenameMarkerDbworld.c_str());
+  if (file_marker_dbworld.is_open())
+    {
+      ConstantStrings* constrings = ConstantStrings::instance();
+      file_marker_dbworld << constrings->PrefixBegin << std::endl 
+			  << constrings->PrefixDeadline << fis.m_Deadline << std::endl
+			  << constrings->PrefixTitle << fis.m_Title << std::endl
+			  << constrings->PrefixURL << fis.m_URL << std::endl
+			  << constrings->PrefixWebpage << fis.m_Webpage << std::endl
+			  << constrings->PrefixEnd << std::endl;
+      file_marker_dbworld.close();
+    }
+}
+
+
+void
+Fetcher::writeInputDbworld(std::ofstream &file_input_dbworld,
+			   const FetchedInfoScholarship &fis)
+{
+  ConstantStrings* constrings = ConstantStrings::instance();
+
+  file_input_dbworld << constrings->PrefixBegin << std::endl 
+		     << constrings->PrefixDeadline << fis.m_Deadline << std::endl
+		     << constrings->PrefixTitle << fis.m_Title << std::endl
+		     << constrings->PrefixURL << fis.m_URL << std::endl
+		     << constrings->PrefixWebpage << fis.m_Webpage << std::endl
+		     << constrings->PrefixEnd << std::endl;
+}
+
+
+
 void
 Fetcher::fetchDbworld()
 {
   std::string dbworld = fetchSingle("https://research.cs.wisc.edu/dbworld/browse.html");
   HTML::ParserDom parser;
   tree<HTML::Node> dom = parser.parseTree(dbworld);
-  
+  FetchedInfoScholarship last_crawled_dbworld_job = lastCrawledDbworldJob();
+  std::ofstream file_input_dbworld(m_FilenameInputDbworld.c_str());
+
+
   for (tree<HTML::Node>::iterator table_it = dom.begin(); table_it != dom.end(); ++table_it)
     {
       if (table_it->tagName() == "TABLE")
@@ -226,7 +302,7 @@ Fetcher::fetchDbworld()
 	  // + (5) Web Page
 
 	  bool is_head = true;
-	  int c = 0;
+	  int count = 0;
 	  for (tree<HTML::Node>::iterator row_it = beg_table; row_it != end_table; ++row_it)
 	    {
 	      if (row_it->tagName() == "TR")
@@ -239,19 +315,16 @@ Fetcher::fetchDbworld()
 		      tree<HTML::Node>::iterator end_row = row_it.end();
 
 		      std::size_t index = 0;
-		      bool move_on = 0;
+		      int move_on = 0;
 
 		      std::string type = "";
-		      std::string title = "";
-		      std::string url = "";
-		      std::string deadline = "";
-		      std::string website = "";
+		      FetchedInfoScholarship fis;
 
 		      for (tree<HTML::Node>::iterator column_it = beg_row; column_it  != end_row; column_it++)
 			{
 			  if (column_it->tagName() == "TD")
 			    {		
-			      move_on = 1;
+			      move_on = 1; // found an entry
 			      switch (index++)
 				{
 				case 1: // type: journal CFP | conf. ann. | ***job ann.*** | news | soft. ann.
@@ -263,41 +336,50 @@ Fetcher::fetchDbworld()
 				case 3:
 				  {
 				    tree<HTML::Node>::iterator url_it = column_it.begin();
-				    url = url_it->text();
-				    extractLink(url);
-				    title = url_it->content(dbworld);
+				    fis.m_URL = url_it->text();
+				    extractLink(fis.m_URL);
+				    fis.m_Title = url_it->content(dbworld);
 				    break;
 				  }
 				case 4:
 				  {
-				    deadline = column_it->content(dbworld);
+				    std::string deadline = column_it->content(dbworld);
 				    boost::gregorian::date d(boost::gregorian::from_uk_string(deadline));
-				    deadline = boost::gregorian::to_iso_string(d);
+				    fis.m_Deadline = boost::gregorian::to_iso_string(d);
 				    break;
 				  }
 				case 5:
 				  {
 				    tree<HTML::Node>::iterator link_it = column_it.begin();
-				    website = link_it->text();
-				    extractLink(website);
+				    fis.m_Webpage = link_it->text();
+				    extractLink(fis.m_Webpage);
 				    break;
 				  }
 				}
 
-			      if (move_on == -1) break;
+			      if (move_on == -1) // did NOT get a job announcement
+				break;
 			    }
 			}
 
 		      if (move_on == 1) // write to file
 			{
+			  // check with the marker whether we reached last time's fetched data
+			  if (fis == last_crawled_dbworld_job) break;
+			  
+			  if (count == 1) cacheCrawledDbworldJob(fis);
+
+			  writeInputDbworld(file_input_dbworld, fis);			    
 			}
 
-		      c++;
-		      if (c == 15) break;
+		      count++;
+		      if (count == 15) break;
 		    }
 		}
 	    }
 	  break;
 	}
     }
+
+  file_input_dbworld.close();
 }

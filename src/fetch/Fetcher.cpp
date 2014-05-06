@@ -1,5 +1,4 @@
 #include "fetch/Fetcher.hpp"
-#include "html/ParserDom.h"
 #include "utilities/ConstantStrings.hpp"
 #include "utilities/HelperFunctions.hpp"
 
@@ -22,7 +21,7 @@ Fetcher::Fetcher(const std::string &path,
     m_FilenameInput(path + filename_input),
     m_FilenameOutput(path + filename_output),
     m_FilenameMarkerDbworld(pathDatabase + filename_marker_dbworld),
-    m_FilenameInputDbworld(pathDatabase + filename_input_dbworld)
+    m_FilenameInputDbworld(path + filename_input_dbworld)
 { }
 
 
@@ -260,6 +259,7 @@ Fetcher::cacheCrawledDbworldJob(const FetchedInfoScholarship &fis)
 }
 
 
+
 void
 Fetcher::writeInputDbworld(std::ofstream &file_input_dbworld,
 			   const FetchedInfoScholarship &fis)
@@ -272,6 +272,67 @@ Fetcher::writeInputDbworld(std::ofstream &file_input_dbworld,
 		     << constrings->PrefixURL << fis.m_URL << std::endl
 		     << constrings->PrefixWebpage << fis.m_Webpage << std::endl
 		     << constrings->PrefixEnd << std::endl;
+}
+
+
+
+int
+Fetcher::fetchDbworldRow(const std::string &dbworld,
+			 tree<HTML::Node>::iterator row_it,
+			 FetchedInfoScholarship &fis)
+{
+  tree<HTML::Node>::iterator beg_row = row_it.begin();
+  tree<HTML::Node>::iterator end_row = row_it.end();
+
+  std::size_t index = 0;
+  int move_on = 0;
+
+  std::string type = "";
+
+
+  for (tree<HTML::Node>::iterator column_it = beg_row; column_it  != end_row; column_it++)
+    {
+      if (column_it->tagName() == "TD")
+	{		
+	  move_on = 1; // found an entry
+	  switch (index++)
+	    {
+	    case 1: // type: journal CFP | conf. ann. | ***job ann.*** | news | soft. ann.
+	      {
+		type = column_it->content(dbworld);
+		if (type != "job ann. ") move_on = -1;
+		break;
+	      }
+	    case 3:
+	      {
+		tree<HTML::Node>::iterator url_it = column_it.begin();
+		fis.m_URL = url_it->text();
+		extractLink(fis.m_URL);
+		fis.m_Title = url_it->content(dbworld);
+		break;
+	      }
+	    case 4:
+	      {
+		std::string deadline = column_it->content(dbworld);
+		boost::gregorian::date d(boost::gregorian::from_uk_string(deadline));
+		fis.m_Deadline = boost::gregorian::to_iso_string(d);
+		break;
+	      }
+	    case 5:
+	      {
+		tree<HTML::Node>::iterator link_it = column_it.begin();
+		fis.m_Webpage = link_it->text();
+		extractLink(fis.m_Webpage);
+		break;
+	      }
+	    }
+	  
+	  if (move_on == -1) // did NOT get a job announcement
+	    break;
+	}
+    }
+
+  return move_on;
 }
 
 
@@ -308,71 +369,21 @@ Fetcher::fetchDbworld()
 	      if (row_it->tagName() == "TR")
 		{
 		  if (is_head) is_head = false;
-		  else
+		  else // at a row with content
 		    {
-		      // at a row with content
-		      tree<HTML::Node>::iterator beg_row = row_it.begin();
-		      tree<HTML::Node>::iterator end_row = row_it.end();
-
-		      std::size_t index = 0;
-		      int move_on = 0;
-
-		      std::string type = "";
 		      FetchedInfoScholarship fis;
-
-		      for (tree<HTML::Node>::iterator column_it = beg_row; column_it  != end_row; column_it++)
-			{
-			  if (column_it->tagName() == "TD")
-			    {		
-			      move_on = 1; // found an entry
-			      switch (index++)
-				{
-				case 1: // type: journal CFP | conf. ann. | ***job ann.*** | news | soft. ann.
-				  {
-				    type = column_it->content(dbworld);
-				    if (type != "job ann. ") move_on = -1;
-				    break;
-				  }
-				case 3:
-				  {
-				    tree<HTML::Node>::iterator url_it = column_it.begin();
-				    fis.m_URL = url_it->text();
-				    extractLink(fis.m_URL);
-				    fis.m_Title = url_it->content(dbworld);
-				    break;
-				  }
-				case 4:
-				  {
-				    std::string deadline = column_it->content(dbworld);
-				    boost::gregorian::date d(boost::gregorian::from_uk_string(deadline));
-				    fis.m_Deadline = boost::gregorian::to_iso_string(d);
-				    break;
-				  }
-				case 5:
-				  {
-				    tree<HTML::Node>::iterator link_it = column_it.begin();
-				    fis.m_Webpage = link_it->text();
-				    extractLink(fis.m_Webpage);
-				    break;
-				  }
-				}
-
-			      if (move_on == -1) // did NOT get a job announcement
-				break;
-			    }
-			}
+		      
+		      int move_on = fetchDbworldRow(dbworld, row_it, fis);
 
 		      if (move_on == 1) // write to file
 			{
-			  // check with the marker whether we reached last time's fetched data
-			  if (fis == last_crawled_dbworld_job) break;
-			  
-			  if (count == 1) cacheCrawledDbworldJob(fis);
+			  if (fis == last_crawled_dbworld_job) break; // check with the marker whether we reached last time's fetched data
+			 
+			  if (++count == 1) cacheCrawledDbworldJob(fis);
 
 			  writeInputDbworld(file_input_dbworld, fis);			    
 			}
 
-		      count++;
 		      if (count == 15) break;
 		    }
 		}

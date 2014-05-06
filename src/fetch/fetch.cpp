@@ -27,7 +27,8 @@ int main()
 	     config->markerDbworld(),
 	     config->inputDbworld());
 
-  fc.fetchMultiple();
+  //fc.fetchMultiple();
+  fc.fetchDbworld();
 
   DBGINFO("Fetching finished...");
 }

@@ -4,6 +4,9 @@
 #include <curl/curl.h>
 #include "fetch/FetchedInfo.hpp"
 #include "fetch/FetchedInfoScholarship.hpp"
+#include "html/ParserDom.h"
+
+using namespace htmlcxx;
 
 class Fetcher
 {
@@ -43,6 +46,11 @@ private:
   void
   writeInputDbworld(std::ofstream &file_input_dbworld,
 		    const FetchedInfoScholarship &fis);
+
+  int
+  fetchDbworldRow(const std::string &dbworld,
+		  tree<HTML::Node>::iterator row_it,
+		  FetchedInfoScholarship &fis);
 
   const std::string 
   currentDateTime();

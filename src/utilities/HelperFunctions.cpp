@@ -74,4 +74,7 @@ extractLink(std::string &s)
   strReplace(s, "\"", "");
   strReplace(s, "<A HREF=", "");
   strReplace(s, ">", "");
+  strReplace(s, " ", "");
+
+  if (s != "" && s.find("http://") == std::string::npos) s = "http://" + s;
 }

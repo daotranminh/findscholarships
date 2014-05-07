@@ -7,8 +7,7 @@ using namespace htmlcxx;
 
 //TODO: Copy here
 void
-HtmlGenScholarshipsLinks::generate(DatePtr &deadline, 
-				   std::string &str_title,
+HtmlGenScholarshipsLinks::generate(FetchedInfoScholarship &fis,
 				   const std::string &filecontent)
 {
   tree<HTML::Node>::iterator beg = m_Dom.begin();
@@ -16,14 +15,13 @@ HtmlGenScholarshipsLinks::generate(DatePtr &deadline,
   
   std::string deadline_sign = "Application Deadline : ";
   std::stringstream stream_html_code;
-  std::string str_deadline;
 	
   for (tree<HTML::Node>::iterator it = beg; it != end; ++it)
     {
-      if (str_title == "" && it->tagName() == "title")
+      if (fis.m_Title == "" && it->tagName() == "title")
 	{
-	  str_title = it->content(filecontent);
-	  cleanUp(str_title);
+	  fis.m_Title = it->content(filecontent);
+	  cleanUp(fis.m_Title);
 	}
       
       if ((it->tagName() == "div") && (it->text() == "<div id=\"maincol\">"))
@@ -48,7 +46,7 @@ HtmlGenScholarshipsLinks::generate(DatePtr &deadline,
 		  
 		  if (std::string::npos != ct.find(deadline_sign))
 		    {
-		      if (deadline.get() == NULL)
+		      if (fis.m_Deadline == "")
 			{		
 			  // For ScholarshipLinks, this is normally the case, as the deadline is standardized.
 			  tree<HTML::Node>::iterator beg_deadline = content_it.begin();
@@ -60,8 +58,8 @@ HtmlGenScholarshipsLinks::generate(DatePtr &deadline,
 			      ct = deadline_it->text();
 			      if (std::string::npos != ct.find(deadline_sign))
 				{										
-				  str_deadline = deadline_it->text();
-				  extractDeadline(str_deadline);
+				  fis.m_Deadline = deadline_it->text();
+				  extractDeadline(fis.m_Deadline);
 				  break; // got the deadline, done
 				}
 			    }
@@ -76,19 +74,13 @@ HtmlGenScholarshipsLinks::generate(DatePtr &deadline,
 	}
     }
   
-  if (deadline.get() == NULL)
-    {
-      Date_t dl(boost::gregorian::from_uk_string(str_deadline));
-      deadline = std::make_shared<Date_t>(dl);
-     }
-  
-  Title title(str_title);
+  Title title(fis.m_Title);
   
   std::string full_html_code = stream_html_code.str();
   dressUp(full_html_code, title);
   
   m_HtmlResult.setFullHtmlCode(full_html_code);
-  m_HtmlResult.setDeadline(deadline);
+  m_HtmlResult.setDeadline(fis.m_Deadline);
   m_HtmlResult.setTitle(title);
 }
 

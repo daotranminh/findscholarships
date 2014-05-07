@@ -1,6 +1,7 @@
 #ifndef ___HTML_GEN_BASE_HPP___
 #define ___HTML_GEN_BASE_HPP___
 
+#include "fetch/FetchedInfoScholarship.hpp"
 #include "htmlgen/HtmlResult.hpp"
 #include "html/ParserDom.h"
 
@@ -10,9 +11,7 @@ class HtmlGenBase
 {
 public:
   void 
-  process(DatePtr &deadline,
-	  std::string &str_title,
-	  const std::string &filename);
+  process(FetchedInfoScholarship &fis);
   
   const HtmlResult&
   getHtmlResult();
@@ -35,8 +34,7 @@ protected:
 	   const std::string &tag_sign);
   
   virtual void 
-  generate(DatePtr &deadline, 
-	   std::string &str_title, 
+  generate(FetchedInfoScholarship &fis, 
 	   const std::string &filecontent) = 0;
   
   virtual void

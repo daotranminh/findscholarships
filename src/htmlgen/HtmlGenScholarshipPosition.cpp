@@ -2,8 +2,7 @@
 #include "utilities/HelperFunctions.hpp"
 
 void
-HtmlGenScholarshipPosition::generate(DatePtr &deadline,
-				     std::string &str_title,
+HtmlGenScholarshipPosition::generate(FetchedInfoScholarship &fis,
 				     const std::string &filecontent)
 {
   tree<HTML::Node>::iterator beg = m_Dom.begin();
@@ -14,7 +13,6 @@ HtmlGenScholarshipPosition::generate(DatePtr &deadline,
   std::string end_sign2 = "Further Scholarship Information and Application";
   std::string end_sign3 = "Further Internship Information and Application";
   std::stringstream stream_html_code;
-  std::string str_deadline;
   
   for (tree<HTML::Node>::iterator it = beg; it != end; ++it)
     {
@@ -66,17 +64,17 @@ HtmlGenScholarshipPosition::generate(DatePtr &deadline,
 	}		
       else if (it->text() == "<h1 class=\"post-title\">")
 	{
-	  str_title = it->content(filecontent);
+	  fis.m_Title = it->content(filecontent);
 	}
     }
   
-  Title title(str_title);
+  Title title(fis.m_Title);
   
   std::string full_html_code = stream_html_code.str();
   
   dressUp(full_html_code, title);
   
   m_HtmlResult.setFullHtmlCode(full_html_code);
-  m_HtmlResult.setDeadline(deadline);
+  m_HtmlResult.setDeadline(fis.m_Deadline);
   m_HtmlResult.setTitle(title);
 }

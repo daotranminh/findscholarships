@@ -6,17 +6,15 @@
 using namespace htmlcxx;
 
 void
-HtmlGenBase::process(DatePtr &deadline,
-		     std::string &str_title,
-		     const std::string &filename)
+HtmlGenBase::process(FetchedInfoScholarship &fis)
 {
   std::string filecontent = "";
   
   std::string delimeter = "";
   initDelimeter(delimeter);
-  readFileAndParse(filename, filecontent, delimeter);
+  readFileAndParse(fis.m_Filename, filecontent, delimeter);
   
-  generate(deadline, str_title, filecontent);
+  generate(fis, filecontent);
 }
 
 

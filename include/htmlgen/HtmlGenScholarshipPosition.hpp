@@ -7,8 +7,7 @@ class HtmlGenScholarshipPosition : public HtmlGenBase
 {
 public:
   void
-  generate(DatePtr &deadline,
-	   std::string &str_title,
+  generate(FetchedInfoScholarship &fis,
 	   const std::string &filecontent);
 };
 

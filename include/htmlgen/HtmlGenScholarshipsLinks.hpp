@@ -7,8 +7,7 @@ class HtmlGenScholarshipsLinks : public HtmlGenBase
 {
 public:
   void
-  generate(DatePtr &deadline,
-	   std::string &title,
+  generate(FetchedInfoScholarship &fis,
 	   const std::string &filecontent);
 
 private:

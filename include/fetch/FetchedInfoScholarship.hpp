@@ -18,6 +18,7 @@ struct FetchedInfoScholarship : FetchedInfoBase
     : FetchedInfoBase(url),
       m_Deadline(deadline),
       m_Title(title),
+      m_Filename(""),
       m_Webpage("")
   { }
 
@@ -29,6 +30,7 @@ struct FetchedInfoScholarship : FetchedInfoBase
     : FetchedInfoBase(url),
       m_Deadline(deadline),
       m_Title(title),
+      m_Filename(""),
       m_Webpage(webpage)
   { }
 
@@ -43,6 +45,7 @@ struct FetchedInfoScholarship : FetchedInfoBase
 
   std::string m_Deadline;
   std::string m_Title;
+  std::string m_Filename;
   std::string m_Webpage;
 };
 

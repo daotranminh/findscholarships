@@ -23,6 +23,9 @@ public:
   
   void
   setDeadline(const DatePtr &dl);
+
+  void
+  setDeadline(const std::string &str_deadline);
   
   const Title&
   getTitle() const;

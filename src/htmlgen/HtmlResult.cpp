@@ -46,6 +46,15 @@ HtmlResult::setDeadline(const DatePtr &dl)
 }
 
 
+void
+HtmlResult::setDeadline(const std::string &str_deadline)
+{
+  Date_t dl(boost::gregorian::from_undelimited_string(str_deadline));
+  m_Deadline = std::make_shared<Date_t>(dl);
+}
+
+
+
 
 const Title&
 HtmlResult::getTitle() const

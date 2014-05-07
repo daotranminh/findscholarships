@@ -1,6 +1,7 @@
 #include "fetch/Fetcher.hpp"
 #include "utilities/ConstantStrings.hpp"
 #include "utilities/HelperFunctions.hpp"
+#include "utilities/Logger.hpp"
 
 #include <assert.h>
 #include <iostream>
@@ -52,6 +53,8 @@ writeData(char *ptr,
 std::string
 Fetcher::fetchSingle(const std::string &url)
 {
+  DBGDEBUG("Fetching from " << url)
+
   std::string ret = "";
 
   m_Curl = curl_easy_init();
@@ -65,16 +68,15 @@ Fetcher::fetchSingle(const std::string &url)
   curl_easy_setopt(m_Curl, CURLOPT_WRITEFUNCTION, writeData);
   curl_easy_setopt(m_Curl, CURLOPT_WRITEDATA, &stream);
 
-  std::cerr << "Fetching from " << url << std::endl;
   m_Res = curl_easy_perform(m_Curl);
       
   if (m_Res != CURLE_OK)
     { 
-      std::cerr << "FAILED!" << std::endl;
+      DBGDEBUG("FAILED!")
     }
   else
     {
-      std::cerr << "SUCCEEDED." << std::endl;
+      DBGDEBUG("SUCCEEDED.")
       ret = stream.str();
     }
 
@@ -85,39 +87,24 @@ Fetcher::fetchSingle(const std::string &url)
 
 
 bool
-Fetcher::getDeadlineTitleURL(std::ifstream& file_input,
-			     std::string &deadline,
-			     std::string &title,
-			     std::string &url)
+Fetcher::getInput(std::ifstream& file_input,
+		  FetchedInfoScholarship &fis)
 {
-  deadline = "";
-  title    = "";
-  url      = "";
+  std::string line = "";
 
-  std::getline(file_input, deadline);
-  if (deadline == "") return false;
+  std::getline(file_input, line);
+  if (line == "") return false;
 
   // only accept deadline of the form YYYYMMDD
-  if (deadline.length() == 8)
+  if (line.length() == 8)
     {
-      std::getline(file_input, title);
-    }
-  else
-    {
-      title = deadline;
-      deadline = "";
+      fis.m_Deadline = line;
+      std::getline(file_input, line);
+      if (line == "") return false;
     }
 
-  if (title.find("http://") == std::string::npos)
-    {
-      std::getline(file_input, url);
-      if (url == "") return false;
-    }
-  else
-    {
-      url = title;
-      title = "";
-    }
+  assert (line.find("http://") != std::string::npos);
+  fis.m_URL = line;
 
   return true;
 }
@@ -144,6 +131,8 @@ Fetcher::currentDateTime()
 void
 Fetcher::fetchMultiple()
 {
+  DBGDEBUG("Fetching from manual input...")
+
   std::ifstream file_input(m_FilenameInput.c_str());
   std::ofstream file_output(m_FilenameOutput.c_str());
 
@@ -160,47 +149,20 @@ Fetcher::fetchMultiple()
     }
 
   const std::string now = currentDateTime();
-
   std::size_t count = 0;
-  std::ostringstream count_str;
+
+  ConstantStrings *constrings = ConstantStrings::instance();
 
   while (file_input.good())
     {
-      std::string deadline;
-      std::string title;
-      std::string url;
-      if (!getDeadlineTitleURL(file_input, deadline, title, url)) break;
+      FetchedInfoScholarship fis;
+      if (!getInput(file_input, fis)) break;
 
-      std::string html_code = fetchSingle(url);
-
-      count_str.str("");
-      count_str << count++;
-
-      std::string filename_scholarship = m_Path + now + count_str.str() + ".txt";
-      std::ofstream file_scholarship(filename_scholarship.c_str());
-      
-      if (!file_scholarship.is_open())
-	{
-	  std::cerr << "Cannot open file \"" << filename_scholarship << "\" for writing!" << std::endl;
-	}
-      else
-	{
-	  file_scholarship << html_code;
-	  file_scholarship.close();
-	      
-
-	  file_output << "__BEGIN_____" << std::endl;
-	  if (deadline != "")
-	    file_output << "__DEADLINE__=" << deadline << std::endl;
-
-	  if (title != "")
-	    file_output << "__TITLE_____=" << title << std::endl;
-
-	  file_output << "__FILENAME__=" << filename_scholarship << std::endl;
-	  file_output << "__URL_______=" << url << std::endl;
-	  file_output << "__END_______" << std::endl;
-	}
+      writeInputToManager(file_output, fis, now, count);
+      count++;
     }
+
+  DBGINFO("Fetched " << count << " scholarship items from manual input!")
 
   file_input.close();
   file_output.close();
@@ -223,7 +185,7 @@ Fetcher::lastCrawledDbworldJob()
       
 
       assert (line.compare(constrings->PrefixBegin) == 0);
-      std::getline(file_marker_dbworld, line);
+
 
       while (line != "" && line.compare(constrings->PrefixEnd) != 0)
 	{
@@ -231,6 +193,7 @@ Fetcher::lastCrawledDbworldJob()
 	  if (line.find(constrings->PrefixTitle) != std::string::npos)    result.m_Title = line.substr(constrings->PrefixTitle.length());
 	  if (line.find(constrings->PrefixURL) != std::string::npos)      result.m_URL = line.substr(constrings->PrefixURL.length());
 	  if (line.find(constrings->PrefixWebpage) != std::string::npos)  result.m_Webpage = line.substr(constrings->PrefixWebpage.length());
+	  std::getline(file_marker_dbworld, line);
 	}
 
       file_marker_dbworld.close();
@@ -261,19 +224,44 @@ Fetcher::cacheCrawledDbworldJob(const FetchedInfoScholarship &fis)
 
 
 void
-Fetcher::writeInputDbworld(std::ofstream &file_input_dbworld,
-			   const FetchedInfoScholarship &fis)
+Fetcher::writeInputToManager(std::ofstream &file_input_to_manager,
+			     FetchedInfoScholarship &fis,
+			     const std::string &now,
+			     const std::size_t count)
 {
   ConstantStrings* constrings = ConstantStrings::instance();
 
-  file_input_dbworld << constrings->PrefixBegin << std::endl 
-		     << constrings->PrefixDeadline << fis.m_Deadline << std::endl
-		     << constrings->PrefixTitle << fis.m_Title << std::endl
-		     << constrings->PrefixURL << fis.m_URL << std::endl
-		     << constrings->PrefixWebpage << fis.m_Webpage << std::endl
-		     << constrings->PrefixEnd << std::endl;
-}
+  std::ostringstream count_str;
+  count_str << count;
 
+  std::string filename_scholarship = m_Path + now + count_str.str() + ".txt";
+  std::ofstream file_scholarship(filename_scholarship.c_str());
+  
+  if (!file_scholarship.is_open())
+    {
+      std::cerr << "Cannot open file \"" << filename_scholarship << "\" for writing!" << std::endl;
+    }
+  else
+    {
+      fis.m_HTMLCode = fetchSingle(fis.m_URL);
+      file_scholarship << fis.m_HTMLCode;
+      file_scholarship.close();
+      
+      fis.m_Filename = filename_scholarship;
+
+      file_input_to_manager << constrings->PrefixBegin    << std::endl;
+
+      if (fis.m_Deadline != "") file_input_to_manager << constrings->PrefixDeadline << fis.m_Deadline << std::endl;
+      if (fis.m_Title != "") file_input_to_manager << constrings->PrefixTitle << fis.m_Title << std::endl;
+
+      file_input_to_manager << constrings->PrefixFilename << fis.m_Filename << std::endl;
+      file_input_to_manager << constrings->PrefixURL << fis.m_URL << std::endl;
+
+      if (fis.m_Webpage != "")	file_input_to_manager << constrings->PrefixWebpage << fis.m_Webpage << std::endl;
+
+      file_input_to_manager << constrings->PrefixEnd << std::endl;
+    }
+}
 
 
 int
@@ -281,6 +269,8 @@ Fetcher::fetchDbworldRow(const std::string &dbworld,
 			 tree<HTML::Node>::iterator row_it,
 			 FetchedInfoScholarship &fis)
 {
+  DBGDEBUG("Fetching from dbworld...")
+
   tree<HTML::Node>::iterator beg_row = row_it.begin();
   tree<HTML::Node>::iterator end_row = row_it.end();
 
@@ -288,7 +278,6 @@ Fetcher::fetchDbworldRow(const std::string &dbworld,
   int move_on = 0;
 
   std::string type = "";
-
 
   for (tree<HTML::Node>::iterator column_it = beg_row; column_it  != end_row; column_it++)
     {
@@ -340,12 +329,17 @@ Fetcher::fetchDbworldRow(const std::string &dbworld,
 void
 Fetcher::fetchDbworld()
 {
+  const std::string now = "dbworld" + currentDateTime();
+  std::size_t count = 0;
+
   std::string dbworld = fetchSingle("https://research.cs.wisc.edu/dbworld/browse.html");
   HTML::ParserDom parser;
   tree<HTML::Node> dom = parser.parseTree(dbworld);
+
   FetchedInfoScholarship last_crawled_dbworld_job = lastCrawledDbworldJob();
   std::ofstream file_input_dbworld(m_FilenameInputDbworld.c_str());
 
+  DBGDEBUG("Now exploring the table...")
 
   for (tree<HTML::Node>::iterator table_it = dom.begin(); table_it != dom.end(); ++table_it)
     {
@@ -363,7 +357,6 @@ Fetcher::fetchDbworld()
 	  // + (5) Web Page
 
 	  bool is_head = true;
-	  int count = 0;
 	  for (tree<HTML::Node>::iterator row_it = beg_table; row_it != end_table; ++row_it)
 	    {
 	      if (row_it->tagName() == "TR")
@@ -377,20 +370,25 @@ Fetcher::fetchDbworld()
 
 		      if (move_on == 1) // write to file
 			{
-			  if (fis == last_crawled_dbworld_job) break; // check with the marker whether we reached last time's fetched data
-			 
+			  if (fis == last_crawled_dbworld_job) // check with the marker whether we reached last time's fetched data
+			    {
+			      DBGDEBUG("Encounter last time's crawled job. Bailing out...")
+			      break; 
+			    }
+
+			  DBGDEBUG("Got a new job announcement")			 
 			  if (++count == 1) cacheCrawledDbworldJob(fis);
 
-			  writeInputDbworld(file_input_dbworld, fis);			    
+			  writeInputToManager(file_input_dbworld, fis, now, count);			    
 			}
-
-		      if (count == 15) break;
 		    }
 		}
 	    }
 	  break;
 	}
     }
+
+  DBGINFO("Fetched " << count << " scholarship items from dbworld!")
 
   file_input_dbworld.close();
 }

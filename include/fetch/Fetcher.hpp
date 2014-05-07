@@ -31,11 +31,8 @@ public:
 
 private:
   bool
-  getDeadlineTitleURL(std::ifstream &file_input,
-		      std::string &deadline,
-		      std::string &title,
-		      std::string &url);
-
+  getInput(std::ifstream &file_input,
+	   FetchedInfoScholarship &fis);
 
   FetchedInfoScholarship
   lastCrawledDbworldJob();
@@ -44,9 +41,11 @@ private:
   cacheCrawledDbworldJob(const FetchedInfoScholarship &fis);
 
   void
-  writeInputDbworld(std::ofstream &file_input_dbworld,
-		    const FetchedInfoScholarship &fis);
-
+  writeInputToManager(std::ofstream &file_input_to_manager,
+		      FetchedInfoScholarship &fis,
+		      const std::string &now,
+		      const std::size_t count);
+  
   int
   fetchDbworldRow(const std::string &dbworld,
 		  tree<HTML::Node>::iterator row_it,

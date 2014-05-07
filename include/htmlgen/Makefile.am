@@ -3,6 +3,7 @@ noinst_HEADERS =  \
 	Database.hpp \
 	DataEntry.hpp \
 	HtmlGenBase.hpp \
+	HtmlGenDbworld.hpp \
 	HtmlGenScholarshipPosition.hpp \
 	HtmlGenScholarshipsLinks.hpp \
 	HtmlResult.hpp \

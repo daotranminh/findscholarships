@@ -29,6 +29,7 @@ libhtmlgen_la_SOURCES = \
 	Database.cpp \
 	DataEntry.cpp \
 	HtmlGenBase.cpp \
+	HtmlGenDbworld.cpp \
 	HtmlGenScholarshipPosition.cpp \
 	HtmlGenScholarshipsLinks.cpp \
 	HtmlResult.cpp \

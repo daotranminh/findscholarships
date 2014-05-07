@@ -9,8 +9,7 @@ class ConstantStrings
 public:
   static ConstantStrings*
   instance();
-	
-  // For reading crawled_input.txt
+
   std::string PrefixBegin;
   std::string PrefixDeadline;
   std::string PrefixTitle;

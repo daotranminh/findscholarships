@@ -3,13 +3,13 @@
 
 
 ConstantStrings::ConstantStrings()
-: PrefixBegin("__BEGIN_____"),
-  PrefixDeadline("__DEADLINE__="),
-  PrefixTitle("__TITLE_____="),
-  PrefixFilename("__FILENAME__="),
-  PrefixURL("__URL_______="),
-  PrefixWebpage("__WEBPAGE___="),
-  PrefixEnd("__END_______")
+  : PrefixBegin("__BEGIN_____"),
+    PrefixDeadline("__DEADLINE__="),
+    PrefixTitle("__TITLE_____="),
+    PrefixFilename("__FILENAME__="),
+    PrefixURL("__URL_______="),
+    PrefixWebpage("__WEBPAGE___="),
+    PrefixEnd("__END_______")
 {
   std::string sign1 = "application deadline is: ";
   std::string sign2 = "application deadline is";

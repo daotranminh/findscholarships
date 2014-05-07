@@ -1,5 +1,6 @@
 #include <fstream>
 
+#include "htmlgen/HtmlGenDbworld.hpp"
 #include "htmlgen/HtmlGenScholarshipPosition.hpp"
 #include "htmlgen/HtmlGenScholarshipsLinks.hpp"
 #include "htmlgen/Manager.hpp"
@@ -9,10 +10,7 @@
 
 bool
 Manager::getInput(std::ifstream &file_input,
-		  DatePtr &deadline,
-		  std::string &str_title,
-		  std::string &filename,
-		  std::string &url)
+		  FetchedInfoScholarship &fis)
 {
   std::string line;
   std::getline(file_input, line);
@@ -28,30 +26,31 @@ Manager::getInput(std::ifstream &file_input,
       bool passed = false;
       if (line.find(ConstantStrings::instance()->PrefixDeadline) != std::string::npos)
 	{
-	  std::string str_deadline = line.substr(ConstantStrings::instance()->PrefixDeadline.length());
-	  Date_t dl(boost::gregorian::from_undelimited_string(str_deadline));
-	  deadline = std::make_shared<Date_t>(dl);
+	  fis.m_Deadline = line.substr(ConstantStrings::instance()->PrefixDeadline.length());
 	  passed = true;
 	}
       
       if (!passed && line.find(ConstantStrings::instance()->PrefixTitle) != std::string::npos)
 	{
-	  str_title = line.substr(ConstantStrings::instance()->PrefixTitle.length());
-	  //DBGDEBUG("Manager::getInput: str_title = " << str_title);
+	  fis.m_Title = line.substr(ConstantStrings::instance()->PrefixTitle.length());
 	  passed = true;
 	}
       
       if (!passed && line.find(ConstantStrings::instance()->PrefixFilename) != std::string::npos)
 	{
-	  filename = line.substr(ConstantStrings::instance()->PrefixFilename.length());
-	  //DBGDEBUG("Manager::getInput: filename = " << filename);
+	  fis.m_Filename = line.substr(ConstantStrings::instance()->PrefixFilename.length());
 	  passed = true;
 	}
       
       if (!passed && line.find(ConstantStrings::instance()->PrefixURL) != std::string::npos)
 	{
-	  url = line.substr(ConstantStrings::instance()->PrefixURL.length());
-	  //DBGDEBUG("Manager::getInput: url = " << url);
+	  fis.m_URL = line.substr(ConstantStrings::instance()->PrefixURL.length());
+	  passed = true;
+	}
+
+      if (!passed && line.find(ConstantStrings::instance()->PrefixWebpage) != std::string::npos)
+	{
+	  fis.m_Webpage = line.substr(ConstantStrings::instance()->PrefixWebpage.length());
 	  passed = true;
 	}
       
@@ -74,14 +73,11 @@ Manager::processBatch(const std::string &file_url_collection,
     {
       while (file_input.good()) 
 	{
-	  DatePtr deadline(NULL);
-	  std::string title = "";
-	  std::string filename = "";
-	  std::string url = "";
+	  FetchedInfoScholarship fis;
 	  
-	  if (!getInput(file_input, deadline, title, filename, url)) break;
+	  if (!getInput(file_input, fis)) break;
 	  
-	  processSingle(deadline, title, filename, url, db);
+	  processSingle(fis, db);
 	}
       
       db.showDatabase();
@@ -99,16 +95,13 @@ Manager::processBatch(const std::string &file_url_collection,
 
 
 void
-Manager::processSingle(DatePtr &deadline,
-		       std::string &str_title,
-		       const std::string &filename, 
-		       const std::string &url, 
+Manager::processSingle(FetchedInfoScholarship &fis,
 		       Database &db)
 {
-  HtmlGenBase* generator = getGenerator(url);
+  HtmlGenBase* generator = getGenerator(fis.m_URL);
   assert (generator != NULL);
 
-  generator->process(deadline, str_title, filename);
+  generator->process(fis);
   const HtmlResult& result = generator->getHtmlResult();
   
   if (result.getDeadline().get() != NULL)
@@ -129,7 +122,7 @@ Manager::processSingle(DatePtr &deadline,
 	  std::size_t index = title.classifiedIndex();
 	  StoragePtr s = st[index];
 	  
-	  db.insert(s, result.getDeadline(), title, url, true /* is_new */);
+	  db.insert(s, result.getDeadline(), fis.m_Title, fis.m_URL, true /* is_new */);
 	  //db.showDatabase();
 	}
       else
@@ -148,29 +141,20 @@ Manager::processSingle(DatePtr &deadline,
 HtmlGenBase*
 Manager::getGenerator(const std::string &url)
 {
-  std::size_t pos = url.find("www.scholarships-links.com");
-  if (pos != std::string::npos)
+  if (url.find("www.scholarships-links.com") != std::string::npos)
     {
       return (new HtmlGenScholarshipsLinks);
     }
-  
-  // pos = url.find("scholarshipsbank.com");
-  // if (pos != std::string::npos)
-  //   {
-  //     return (new HtmlGenScholarshipsBank);
-  //   }
-  
-  pos = url.find("scholarship-positions.com");
-  if (pos != std::string::npos)
+
+  if (url.find("scholarship-positions.com") != std::string::npos)
     {
       return (new HtmlGenScholarshipPosition);
     }
   
-  // pos = url.find("www.cs.wisc.edu");
-  // if (pos != std::string::npos)
-  //   {
-  //     return (new HtmlGenDbWorld);
-  //   }
+   if (url.find("www.cs.wisc.edu") != std::string::npos)
+     {
+       return (new HtmlGenDbworld);
+     }
   
   return NULL;
 }

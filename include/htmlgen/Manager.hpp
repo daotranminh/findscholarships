@@ -1,6 +1,7 @@
 #ifndef ___MANAGER_HPP___
 #define ___MANAGER_HPP___
 
+#include "fetch/FetchedInfoScholarship.hpp"
 #include "htmlgen/Database.hpp"
 #include "htmlgen/HtmlGenBase.hpp"
 
@@ -14,16 +15,10 @@ public:
 private:
   bool
   getInput(std::ifstream &file_input,
-	   DatePtr &deadline,
-	   std::string &str_title,
-	   std::string &filename,
-	   std::string &url);
+	   FetchedInfoScholarship &fis);
   
   void
-  processSingle(DatePtr &deadline,
-		std::string &str_title,
-		const std::string &filename, 
-		const std::string &url, 
+  processSingle(FetchedInfoScholarship &fis, 
 		Database &db);
   
   HtmlGenBase* 

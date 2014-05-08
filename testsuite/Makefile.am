@@ -24,7 +24,7 @@ LIBS = \
 	$(BOOST_SYSTEM_LIBS) \
 	$(BOOST_DATE_TIME_LIBS)
 
-TEST = \
+TESTS = \
 	testBoostDateTime \
 	testConfiguration \
 	testDatabase
@@ -51,4 +51,5 @@ testConfiguration_LDADD = \
 testDatabase_SOURCES = testDatabase.cpp
 testDatabase_LDADD = \
 	$(top_builddir)/src/utilities/libutilities.la \
+	$(top_builddir)/src/html/libhtmlcxx.la \
 	$(top_builddir)/src/htmlgen/libhtmlgen.la

@@ -9,7 +9,6 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/bind.hpp>
 
-
 void
 createDummyDatabase(const std::size_t db_index)
 {
@@ -28,10 +27,10 @@ createDummyDatabase(const std::size_t db_index)
   const std::string category = categories[db_index];
 
   std::ofstream db_file(filename.c_str());
-  db_file << boost::gregorian::to_iso_string(past_1_month) << std::endl
+  db_file << boost::gregorian::to_simple_string(past_1_month) << std::endl
 	  << category << " expired" << std::endl
 	  << "http://www." << category << ".expired.html" << std::endl
-	  << boost::gregorian::to_iso_string(in_2_months) << std::endl
+	  << boost::gregorian::to_simple_string(in_2_months) << std::endl
 	  << category << " valid" << std::endl
 	  << "http://www." << category << ".valid.html" << std::endl;
   

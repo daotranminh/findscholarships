@@ -36,7 +36,8 @@ Database::Database()
   Date_t today = boost::gregorian::day_clock::local_day();
   boost::gregorian::months one_month(1);
   Date_t in_1_month = today + one_month;
-  m_LowerBound = std::make_shared<Date_t>(in_1_month);
+  //m_LowerBound = std::make_shared<Date_t>(in_1_month);
+  m_LowerBound = boost::shared_ptr<Date_t>(new Date_t(in_1_month));
 }
 
 
@@ -79,7 +80,8 @@ Database::loadDatabase(const std::string& filename, StoragePtr to_load)
 	  if (line == "") break;
 	  
 	  Date_t deadline = boost::gregorian::from_simple_string(line);
-	  DatePtr deadline_ptr = std::make_shared<Date_t>(deadline);
+	  //DatePtr deadline_ptr = std::make_shared<Date_t>(deadline);
+	  DatePtr deadline_ptr(new Date_t(deadline));
 	  
 	  std::getline(inp, line);
 	  Title title(line);

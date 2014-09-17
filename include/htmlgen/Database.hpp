@@ -17,7 +17,9 @@ struct DateCompare
 
 
 typedef std::multimap<DatePtr, DataEntry, DateCompare> Storage;
-typedef std::shared_ptr<Storage> StoragePtr;
+//for C++11
+//typedef std::shared_ptr<Storage> StoragePtr;
+typedef boost::shared_ptr<Storage> StoragePtr;
 typedef std::vector<StoragePtr> StorageVec;
 
 

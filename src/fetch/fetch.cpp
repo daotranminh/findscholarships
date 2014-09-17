@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
   std::string fetch_from = "all";
 
-  const char *help_description = "\nUsage: fetch [--from=all/manual/dbworld]\n";
+  const char *help_description = "\nUsage: fetch [--from=all/manual/dbworld/spgmail]\n";
   boost::program_options::options_description desc(help_description);
 
   desc.add_options()
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
   DBGINIT(std::cerr, Logger::INFO | Logger::ERRO | Logger::VERB | Logger::DEBU);
 
-  std::string config_filename = "/Users/minhdt/Documents/Study/findscholarships-website/config.cfg";
+  std::string config_filename = "/Users/minhdt/Documents/softwares/findscholarships-website/config.cfg";
 
   Configuration* config = Configuration::instance();
   config->readConfig(config_filename);
@@ -45,7 +45,9 @@ int main(int argc, char *argv[])
 	     config->inputLinks(), 
 	     config->inputFetched(),
 	     config->markerDbworld(),
-	     config->inputDbworld());
+	     config->inputDbworld(),
+             config->htmlScholarshipPositionsGmail(),
+             config->inputScholarshipPositionsGmail());
 
   if (fetch_from == "manual")
     {
@@ -62,6 +64,15 @@ int main(int argc, char *argv[])
       DBGDEBUG("inputDbworld  = " << config->inputDbworld())
       fc.fetchDbworld();
     }
+  else //(fetch_from == "spgmail") // Scholarship Positions Gmail.
+    {
+      DBGDEBUG("inputDatabase = " << config->pathDatabase())
+      DBGDEBUG("pathTemp      = " << config->pathTemp())
+      DBGDEBUG("htmlSPGmail   = " << config->htmlScholarshipPositionsGmail())
+      DBGDEBUG("inputSPGmail  = " << config->inputScholarshipPositionsGmail())
+      fc.fetchScholarshipPositionsGmail();
+    }
+#if 0
   else
     {
       assert (fetch_from == "all");
@@ -70,10 +81,14 @@ int main(int argc, char *argv[])
       DBGDEBUG("inputLinks    = " << config->inputLinks())
       DBGDEBUG("inputFetched  = " << config->inputFetched())
       DBGDEBUG("markerDbworld = " << config->markerDbworld())
+      DBGDEBUG("htmlSPGmail   = " << config->htmlScholarshipPositionsGmail())
+      DBGDEBUG("inputSPGmail  = " << config->inputScholarshipPositionsGmail())
 
       fc.fetchMultiple();
       fc.fetchDbworld();
+      fc.fetchScholarshipPositionsGmail();
     }
+#endif
 
   DBGINFO("Fetching finished...");
 }

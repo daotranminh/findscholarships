@@ -16,7 +16,9 @@ public:
 	  const std::string &filename_input,
 	  const std::string &filename_output,
 	  const std::string &filename_marker_dbworld,
-	  const std::string &filename_input_dbworld);
+	  const std::string &filename_input_dbworld,
+          const std::string &filename_html_scholarship_positions_gmail,
+          const std::string &filename_input_scholarship_positions_gmail);
 
   ~Fetcher();
 
@@ -28,6 +30,9 @@ public:
 
   void
   fetchDbworld();
+
+  void
+  fetchScholarshipPositionsGmail();
 
 private:
   bool
@@ -54,6 +59,13 @@ private:
   const std::string 
   currentDateTime();
 
+  bool
+  isPotentialTitle(const std::string &s);
+
+  void
+  fetchOneScholarshipPosition(const std::string &title,
+                              const std::string &deadline);
+
 private:
   CURL *m_Curl;
   CURLcode m_Res;
@@ -63,6 +75,8 @@ private:
   const std::string m_FilenameOutput;
   const std::string m_FilenameMarkerDbworld;
   const std::string m_FilenameInputDbworld;
+  const std::string m_FilenameHtmlScholarshipPositionsGmail;
+  const std::string m_FilenameInputScholarshipPositionsGmail;
 };
 
 

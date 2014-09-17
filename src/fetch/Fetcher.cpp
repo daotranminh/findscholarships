@@ -17,12 +17,16 @@ Fetcher::Fetcher(const std::string &path,
 		 const std::string &filename_input,
 		 const std::string &filename_output,
 		 const std::string &filename_marker_dbworld,
-		 const std::string &filename_input_dbworld)
+		 const std::string &filename_input_dbworld,
+                 const std::string &filename_html_scholarship_positions_gmail,
+                 const std::string &filename_input_scholarship_positions_gmail)
   : m_Path(path),
     m_FilenameInput(path + filename_input),
     m_FilenameOutput(path + filename_output),
     m_FilenameMarkerDbworld(pathDatabase + filename_marker_dbworld),
-    m_FilenameInputDbworld(path + filename_input_dbworld)
+    m_FilenameInputDbworld(path + filename_input_dbworld),
+    m_FilenameHtmlScholarshipPositionsGmail(path + filename_html_scholarship_positions_gmail),
+    m_FilenameInputScholarshipPositionsGmail(path + filename_input_scholarship_positions_gmail)
 { }
 
 
@@ -391,4 +395,93 @@ Fetcher::fetchDbworld()
   DBGINFO("Fetched " << count << " scholarship items from dbworld!")
 
   file_input_dbworld.close();
+}
+
+
+
+bool
+Fetcher::isPotentialTitle(const std::string &s)
+{
+  return (s.find("Tags:") == std::string::npos && s.find("Apply Now") == std::string::npos && s != "&nbsp;");
+}
+
+
+void
+Fetcher::fetchScholarshipPositionsGmail()
+{
+  std::size_t count = 0;
+  
+  std::ifstream file_input(m_FilenameHtmlScholarshipPositionsGmail.c_str());
+  std::ofstream file_output(m_FilenameInputScholarshipPositionsGmail.c_str());
+
+  if (!file_input.is_open())
+    {
+      std::cerr << "Cannot open file \"" << m_FilenameHtmlScholarshipPositionsGmail << "\" for reading!" << std::endl;
+      return;
+    }
+
+  if (!file_output.is_open())
+    {
+      std::cerr << "Cannot open file \"" << m_FilenameInputScholarshipPositionsGmail << "\" for writing!" << std::endl;
+      return;
+    }
+                                                
+  std::string content_gmail = "";
+
+  // ToDo: check for a better way to get the content of the whole file
+  std::string line = "";
+  while (!file_input.eof())
+    {
+      std::getline(file_input, line);
+      content_gmail = content_gmail + line + "\n";
+    }
+
+  HTML::ParserDom parser;
+  tree<HTML::Node> dom = parser.parseTree(content_gmail);
+
+  tree<HTML::Node>::iterator beg = dom.begin();
+  tree<HTML::Node>::iterator end = dom.end();
+
+  std::string ct = "";
+  std::string title_str = "";
+  std::string deadline_str = "";
+
+  tree<HTML::Node>::iterator previous_it = NULL;
+  
+  for (tree<HTML::Node>::iterator it = beg; it != end; ++it)
+    {
+      if (it->tagName() == "strong")
+        {
+          ct = it->content(content_gmail);
+          if (ct.find("Provided by:") != std::string::npos)
+            {
+              title_str = previous_it->content(content_gmail);
+              std::cout << title_str << std::endl;
+            }
+          if (ct.find("Application Deadline") != std::string::npos)
+            {
+              tree<HTML::Node>::iterator jt = it;
+              ++jt;
+              ++jt;
+              ++jt;
+
+              deadline_str = jt->content(content_gmail);
+              std::cout << deadline_str << std::endl << std::endl;
+
+              fetchOneScholarshipPosition(title_str, deadline_str);
+            }
+          
+          previous_it = it;
+        }
+    }
+
+  DBGINFO("Fetched " << count << " scholarship items from ScholarshipPositions-Gmail!")
+}
+
+
+
+void
+Fetcher::fetchOneScholarshipPosition(const std::string &title,
+                                      const std::string &deadline)
+{
 }

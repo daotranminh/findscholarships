@@ -276,6 +276,8 @@ Configuration::readConfig(const std::string& filename)
   filename_input_fetched = readLine(filename, "INPUT_FETCHED");
   filename_marker_dbworld = readLine(filename, "MARKER_DBWORLD");
   filename_input_dbworld = readLine(filename, "INPUT_DBWORLD");
+  filename_html_scholarship_positions_gmail = readLine(filename, "HTML_SCHOLARSHIP_POSITIONS_GMAIL");
+  filename_input_scholarship_positions_gmail = readLine(filename, "INPUT_SCHOLARSHIP_POSITIONS_GMAIL");
   
   path_storages.reserve(TOTAL_STORAGES);
   

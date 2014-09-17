@@ -40,7 +40,7 @@ main (int argc, const char *argv[])
 
   DBGINIT(std::cerr, Logger::INFO | Logger::ERRO | Logger::VERB | Logger::DEBU)
 	
-  std::string config_filename = "/Users/minhdt/Documents/Study/findscholarships-website/config.cfg";
+  std::string config_filename = "/Users/minhdt/Documents/softwares/findscholarships-website/config.cfg";
   
   DBGINFO("Read config")
     

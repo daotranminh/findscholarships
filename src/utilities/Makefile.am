@@ -27,5 +27,6 @@ lib_LTLIBRARIES = libutilities.la
 libutilities_la_SOURCES = \
 	ConstantStrings.cpp \
 	Configuration.cpp \
+	DateConverter.cpp \
 	HelperFunctions.cpp \
 	Logger.cpp

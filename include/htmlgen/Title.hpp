@@ -2,13 +2,8 @@
 #define ___TITLE_HPP___
 
 #include <string>
-#include <boost/shared_ptr.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
+#include "utilities/DateType.hpp"
 
-typedef boost::gregorian::date Date_t;
-//for C++11
-//typedef std::shared_ptr<Date_t> DatePtr;
-typedef boost::shared_ptr<Date_t> DatePtr;
 
 class Title
 {

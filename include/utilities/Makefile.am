@@ -2,6 +2,8 @@
 noinst_HEADERS =  \
 	ConstantStrings.hpp \
 	Configuration.hpp \
+	DateConverter.hpp \
+	DateType.hpp \
 	HelperFunctions.hpp \
 	Logger.hpp \
 	ProgramOptions.hpp	

@@ -78,3 +78,27 @@ extractLink(std::string &s)
 
   if (s != "" && s.find("http://") == std::string::npos) s = "http://" + s;
 }
+
+
+
+std::string
+getStringInBetween(const std::string &s,
+                   const std::string &sbeg,
+                   const std::string &send)
+{
+  std::size_t beg = s.find(sbeg) + sbeg.length();
+  std::size_t end = s.find(send);
+
+  return s.substr(beg, end - beg);
+}
+
+
+
+void
+convertToLower(std::string &s)
+{
+  for(std::size_t i = 0; s[i]; i++)
+    {
+      s[i] = std::tolower(s[i]);
+    }  
+}

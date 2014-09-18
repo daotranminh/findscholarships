@@ -446,7 +446,7 @@ Fetcher::fetchScholarshipPositionsGmail()
   std::string title_str = "";
   std::string deadline_str = "";
 
-  tree<HTML::Node>::iterator previous_it = NULL;
+  tree<HTML::Node>::iterator previous_bold_it = NULL;
   
   for (tree<HTML::Node>::iterator it = beg; it != end; ++it)
     {
@@ -455,23 +455,44 @@ Fetcher::fetchScholarshipPositionsGmail()
           ct = it->content(content_gmail);
           if (ct.find("Provided by:") != std::string::npos)
             {
-              title_str = previous_it->content(content_gmail);
+              title_str = previous_bold_it->content(content_gmail);
               std::cout << title_str << std::endl;
             }
           if (ct.find("Application Deadline") != std::string::npos)
             {
               tree<HTML::Node>::iterator jt = it;
-              ++jt;
-              ++jt;
-              ++jt;
 
+              // To deal with the following form:
+              // <strong><span style="background: white">Application Deadline</span></strong>
+              // <span style="background: white">&nbsp;22 September 2014</span><br />
+              ++jt;
+              ++jt;
+              ++jt;
               deadline_str = jt->content(content_gmail);
+
+              //
+              // To deal with the following form:
+              // <strong>Application Deadline</strong> 31 October 2014<br />
+              //
+              if (deadline_str == "")
+                {
+                  for (jt = it; jt != end; ++jt)
+                    {
+                      if (jt->tagName() == "br")
+                        {
+                          jt--;
+                          deadline_str = jt->text();
+                          break;
+                        }
+                    }
+                }
+
               std::cout << deadline_str << std::endl << std::endl;
 
               fetchOneScholarshipPosition(title_str, deadline_str);
             }
           
-          previous_it = it;
+          previous_bold_it = it;
         }
     }
 
@@ -481,7 +502,19 @@ Fetcher::fetchScholarshipPositionsGmail()
 
 
 void
-Fetcher::fetchOneScholarshipPosition(const std::string &title,
-                                      const std::string &deadline)
+Fetcher::fetchOneScholarshipPosition(const std::string &link_title,
+                                     std::string &deadline)
 {
+  std::string sign1 = "<a href=\"";
+  std::string sign2 = "\">";
+  std::string sign3 = "</a>";
+
+  std::string link = getStringInBetween(link_title, sign1, sign2);
+  std::string title = getStringInBetween(link_title, sign2, sign3);
+  strReplace(title, "\n", " ");
+
+  convertToLower(deadline);
+  std::size_t day = 0;
+  std::size_t month = 0;
+  std::size_t year = 0;
 }

@@ -64,7 +64,7 @@ private:
 
   void
   fetchOneScholarshipPosition(const std::string &title,
-                              const std::string &deadline);
+                              std::string &deadline);
 
 private:
   CURL *m_Curl;

@@ -23,4 +23,14 @@ currentDateTime();
 void
 extractLink(std::string &s);
 
+
+std::string
+getStringInBetween(const std::string &s,
+                   const std::string &sbeg,
+                   const std::string &send);
+
+void
+convertToLower(std::string &s);
+
+
 #endif // ___HELPER_FUNCTIONS_HPP___

@@ -25,7 +25,7 @@ public:
 private:
   ConstantStrings();
 	
-  static ConstantStrings* _instance;
+  static ConstantStrings *_instance;
 };
 
 #endif // __CONSTANT_STRINGS_HPP__

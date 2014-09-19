@@ -20,7 +20,7 @@ main (int argc, const char *argv[])
 {
   std::string from = "all";
 
-  const char *help_description = "\nUsage: fetch [--from=all/manual/dbworld]\n";
+  const char *help_description = "\nUsage: fetch [--from=all/manual/dbworld/spgmail]\n";
   boost::program_options::options_description desc(help_description);
 
   desc.add_options()
@@ -65,6 +65,11 @@ main (int argc, const char *argv[])
       DBGINFO("From dbworld...")
       man.processBatch(config->pathTemp() + config->inputDbworld(), db);
     }
+  else if (from == "spgmail")
+    {
+      DBGINFO("From ScholarshipPositions Gmail...")
+      man.processBatch(config->pathTemp() + config->inputScholarshipPositionsGmail(), db);
+    }
   else
     {
       assert (from == "all");
@@ -72,6 +77,8 @@ main (int argc, const char *argv[])
       man.processBatch(config->pathTemp() + config->inputFetched(), db);
       DBGINFO("From dbworld...")
       man.processBatch(config->pathTemp() + config->inputDbworld(), db);
+      DBGINFO("From ScholarshipPositions Gmail...")
+      man.processBatch(config->pathTemp() + config->inputScholarshipPositionsGmail(), db);
     }
 
   DBGINFO("Finish!")

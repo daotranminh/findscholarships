@@ -63,8 +63,11 @@ private:
   isPotentialTitle(const std::string &s);
 
   void
-  fetchOneScholarshipPosition(const std::string &title,
-                              std::string &deadline);
+  fetchOneScholarshipPosition(std::ofstream &file_output,
+                              const std::string &now,
+                              std::size_t &count,
+                              const std::string &link_title_str,
+                              const std::string &deadline_str);
 
 private:
   CURL *m_Curl;

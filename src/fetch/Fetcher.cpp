@@ -1,5 +1,7 @@
 #include "fetch/Fetcher.hpp"
 #include "utilities/ConstantStrings.hpp"
+#include "utilities/DateConverter.hpp"
+#include "utilities/DateType.hpp"
 #include "utilities/HelperFunctions.hpp"
 #include "utilities/Logger.hpp"
 
@@ -409,6 +411,7 @@ Fetcher::isPotentialTitle(const std::string &s)
 void
 Fetcher::fetchScholarshipPositionsGmail()
 {
+  const std::string now = "spgmail" + currentDateTime();
   std::size_t count = 0;
   
   std::ifstream file_input(m_FilenameHtmlScholarshipPositionsGmail.c_str());
@@ -443,7 +446,7 @@ Fetcher::fetchScholarshipPositionsGmail()
   tree<HTML::Node>::iterator end = dom.end();
 
   std::string ct = "";
-  std::string title_str = "";
+  std::string link_title_str = "";
   std::string deadline_str = "";
 
   tree<HTML::Node>::iterator previous_bold_it = NULL;
@@ -455,8 +458,7 @@ Fetcher::fetchScholarshipPositionsGmail()
           ct = it->content(content_gmail);
           if (ct.find("Provided by:") != std::string::npos)
             {
-              title_str = previous_bold_it->content(content_gmail);
-              std::cout << title_str << std::endl;
+              link_title_str = previous_bold_it->content(content_gmail);
             }
           if (ct.find("Application Deadline") != std::string::npos)
             {
@@ -487,9 +489,8 @@ Fetcher::fetchScholarshipPositionsGmail()
                     }
                 }
 
-              std::cout << deadline_str << std::endl << std::endl;
-
-              fetchOneScholarshipPosition(title_str, deadline_str);
+              fetchOneScholarshipPosition(file_output, now, count,
+                                          link_title_str, deadline_str);
             }
           
           previous_bold_it = it;
@@ -502,19 +503,31 @@ Fetcher::fetchScholarshipPositionsGmail()
 
 
 void
-Fetcher::fetchOneScholarshipPosition(const std::string &link_title,
-                                     std::string &deadline)
+Fetcher::fetchOneScholarshipPosition(std::ofstream &file_output,
+                                     const std::string &now,
+                                     std::size_t &count,
+                                     const std::string &link_title_str,
+                                     const std::string &deadline_str)
 {
   std::string sign1 = "<a href=\"";
-  std::string sign2 = "\">";
-  std::string sign3 = "</a>";
+  std::string sign2 = "/\"";
+  std::string sign3 = "\">";
+  std::string sign4 = "</a>";
 
-  std::string link = getStringInBetween(link_title, sign1, sign2);
-  std::string title = getStringInBetween(link_title, sign2, sign3);
-  strReplace(title, "\n", " ");
+  std::string s = link_title_str;
+  strReplace(s, "\n", " ");
 
-  convertToLower(deadline);
-  std::size_t day = 0;
-  std::size_t month = 0;
-  std::size_t year = 0;
+  FetchedInfoScholarship fis;
+  fis.m_URL = getStringInBetween(s, sign1, sign2);
+  fis.m_Title = getStringInBetween(s, sign3, sign4);
+
+  DatePtr deadline = DateConverter::instance()->convert(deadline_str);
+
+  if (deadline.get())
+    {
+      fis.m_Deadline = boost::gregorian::to_iso_string(*deadline);
+
+      writeInputToManager(file_output, fis, now, count);
+      count++;
+    }
 }

@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
       DBGDEBUG("inputDbworld  = " << config->inputDbworld())
       fc.fetchDbworld();
     }
-  else //(fetch_from == "spgmail") // Scholarship Positions Gmail.
+  else if (fetch_from == "spgmail") // Scholarship Positions Gmail.
     {
       DBGDEBUG("inputDatabase = " << config->pathDatabase())
       DBGDEBUG("pathTemp      = " << config->pathTemp())
@@ -72,7 +72,6 @@ int main(int argc, char *argv[])
       DBGDEBUG("inputSPGmail  = " << config->inputScholarshipPositionsGmail())
       fc.fetchScholarshipPositionsGmail();
     }
-#if 0
   else
     {
       assert (fetch_from == "all");
@@ -88,7 +87,6 @@ int main(int argc, char *argv[])
       fc.fetchDbworld();
       fc.fetchScholarshipPositionsGmail();
     }
-#endif
 
   DBGINFO("Fetching finished...");
 }

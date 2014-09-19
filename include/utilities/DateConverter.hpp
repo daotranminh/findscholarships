@@ -26,6 +26,13 @@ private:
             const std::size_t testYear,
             std::size_t &year);
 
+  void
+  checkDay(const std::string &s,
+           std::size_t &day);
+
+  bool
+  isNumber(const std::string &s);
+
   static DateConverter *_instance;
 };
 

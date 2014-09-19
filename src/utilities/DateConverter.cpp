@@ -68,6 +68,30 @@ DateConverter::checkYear(std::string &s,
 }
 
 
+
+bool
+DateConverter::isNumber(const std::string &s)
+{
+  std::string::const_iterator it = s.begin();
+
+  while (it != s.end() && (*it == ' ' || isdigit(*it))) ++it;
+
+  return (!s.empty() && it == s.end());
+}
+
+
+
+void
+DateConverter::checkDay(const std::string &s,
+                        std::size_t &day)
+{
+  if (isNumber(s))
+    {
+      day = std::atoi(s.c_str());
+    }
+}
+
+
 DatePtr
 DateConverter::convert(const std::string &str_date)
 {
@@ -76,7 +100,7 @@ DateConverter::convert(const std::string &str_date)
   std::string s = str_date;
   convertToLower(s);
 
-  killSpecialChar(s, '&nbsp;');
+  strReplace(s, "&nbsp;", "");
   strReplace(s, "-", " ");
 
   std::size_t day = 0;
@@ -100,14 +124,11 @@ DateConverter::convert(const std::string &str_date)
 
   if (year == 0) return d;
 
-  // continue here!
-  //checkDay(s, day);
-  
+  checkDay(s, day);
 
-
-  std::cout << "day = " << day << std::endl;
-  std::cout << "s = " << s << std::endl;
+  if (day == 0 || day > 31) return d;
   
+  d = DatePtr(new Date_t(year, month, day));
 
   return d;
 }

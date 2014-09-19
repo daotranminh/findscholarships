@@ -62,10 +62,10 @@ HtmlGenScholarshipPosition::generate(FetchedInfoScholarship &fis,
 	    }
 	  
 	}		
-      else if (it->text() == "<h1 class=\"post-title\">")
-	{
-	  fis.m_Title = it->content(filecontent);
-	}
+      // else if (it->text() == "<h1 class=\"post-title\">")
+      //   {
+      //     fis.m_Title = it->content(filecontent);
+      //   }
     }
   
   Title title(fis.m_Title);

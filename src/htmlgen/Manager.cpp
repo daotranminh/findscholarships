@@ -78,7 +78,7 @@ Manager::processBatch(const std::string &file_url_collection,
 	  if (!getInput(file_input, fis)) break;
 	  
 	  processSingle(fis, db);
-	}
+        }
       
       db.showDatabase();
       db.storeDatabase();
@@ -101,7 +101,12 @@ Manager::processSingle(FetchedInfoScholarship &fis,
   HtmlGenBase* generator = getGenerator(fis.m_URL);
   assert (generator != NULL);
 
+  std::cout << "Before processing: " << fis.m_Title << std::endl;
+
   generator->process(fis);
+
+  std::cout << "After processing: " << fis.m_Title << std::endl;
+
   const HtmlResult& result = generator->getHtmlResult();
   
   if (result.getDeadline().get() != NULL)

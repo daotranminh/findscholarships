@@ -8,6 +8,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
 
 void
 createDummyDatabase(const std::size_t db_index)
@@ -51,8 +52,10 @@ insertDummy(Database &db,
   Date_t past_2_months = today - two_months;
   Date_t in_1_month = today + one_month;
 
-  DatePtr past_2_months_ptr = std::make_shared<Date_t>(past_2_months);
-  DatePtr in_1_month_ptr = std::make_shared<Date_t>(in_1_month);
+  //DatePtr past_2_months_ptr = std::make_shared<Date_t>(past_2_months);
+  //DatePtr in_1_month_ptr = std::make_shared<Date_t>(in_1_month);
+  DatePtr past_2_months_ptr = boost::shared_ptr<Date_t>(new Date_t(past_2_months));
+  DatePtr in_1_month_ptr = boost::shared_ptr<Date_t>(new Date_t(in_1_month));
 
   Configuration *config = Configuration::instance();
   const StringVec &categories = config->categories();
@@ -112,7 +115,7 @@ BOOST_AUTO_TEST_CASE ( testDatabase )
 {
   DBGINIT(std::cerr, Logger::INFO | Logger::VERB | Logger::DEBU)
 
-  std::string config_filename = "/Users/minhdt/Documents/Study/github/findscholarships/examples/testDatabase/config.cfg";
+  std::string config_filename = "/Users/minhdt/Documents/softwares/findscholarships/examples/testDatabase/config.cfg";
   Configuration *config = Configuration::instance();
   config->readConfig(config_filename);
 

@@ -11,8 +11,8 @@ BOOST_AUTO_TEST_CASE ( testConfiguration )
 {
   DBGINIT(std::cerr, Logger::INFO | Logger::ERRO | Logger::VERB | Logger::DEBU)
 
-  std::string config_filename = "/Users/minhdt/Documents/Study/findscholarships-website/config.cfg";
-  std::string path_root = "/Users/minhdt/Documents/Study/findscholarships-website/";
+  std::string config_filename = "/Users/minhdt/Documents/softwares/findscholarships-website/config.cfg";
+  std::string path_root = "/Users/minhdt/Documents/softwares/findscholarships-website/";
   Configuration *config = Configuration::instance();
 
   config->readConfig(config_filename);

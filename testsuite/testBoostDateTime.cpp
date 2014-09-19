@@ -5,6 +5,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
 
 BOOST_AUTO_TEST_CASE ( testBoostDateTime )
 {
@@ -18,7 +19,8 @@ BOOST_AUTO_TEST_CASE ( testBoostDateTime )
 
   boost::gregorian::months one_month(1);
   boost::gregorian::date d3 = d2 - one_month;
-  std::shared_ptr<boost::gregorian::date> d3_ptr = std::make_shared<boost::gregorian::date>(d3);
+  //std::shared_ptr<boost::gregorian::date> d3_ptr = std::make_shared<boost::gregorian::date>(d3);
+  boost::shared_ptr<boost::gregorian::date> d3_ptr = boost::shared_ptr<boost::gregorian::date>(new boost::gregorian::date(d3));
   std::cout << boost::gregorian::to_iso_extended_string(*d3_ptr) << std::endl;
   std::cout << boost::gregorian::to_iso_string(*d3_ptr) << std::endl;
 

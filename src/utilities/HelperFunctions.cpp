@@ -1,5 +1,5 @@
 #include "utilities/HelperFunctions.hpp"
-
+#include <iostream>
 
 
 void
@@ -86,7 +86,7 @@ getStringInBetween(const std::string &s,
                    const std::string &sbeg,
                    const std::string &send)
 {
-  std::size_t beg = s.find(sbeg) + sbeg.length();
+  std::size_t beg = s.rfind(sbeg) + sbeg.length();
   std::size_t end = s.find(send);
 
   return s.substr(beg, end - beg);

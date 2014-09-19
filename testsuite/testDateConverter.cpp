@@ -12,10 +12,14 @@ BOOST_AUTO_TEST_CASE ( testDateConverter )
   DBGINIT(std::cerr, Logger::INFO | Logger::ERRO | Logger::VERB | Logger::DEBU)
 
   DateConverter *dc = DateConverter::instance();
-  DatePtr d = dc->convert("1s2 November 2014");
+  DatePtr d = dc->convert("3s1 June 2014");
 
   if (d.get() == NULL)
     {
       std::cout << "NULL" << std::endl;
+    }
+  else
+    {
+      std::cout << boost::gregorian::to_iso_extended_string(*d) << std::endl;
     }
 }

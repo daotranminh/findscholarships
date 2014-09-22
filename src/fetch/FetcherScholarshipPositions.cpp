@@ -56,7 +56,8 @@ FetcherScholarshipPositions::fetchOneScholarshipPosition(std::ofstream &file_out
 
 void
 FetcherScholarshipPositions::fetch()
-{  const std::string now = "spgmail" + currentDateTime();
+{  
+  const std::string now = "spgmail" + currentDateTime();
   std::size_t count = 0;
   
   std::ifstream file_input(m_FilenameHtmlScholarshipPositionsGmail.c_str());

@@ -27,6 +27,8 @@ lib_LTLIBRARIES = libfetch.la
 libfetch_la_SOURCES = \
 	FetchedInfo.cpp \
 	FetcherBase.cpp \
+	FetcherDbworld.cpp \
+	FetcherManual.cpp \
 	FetcherScholarshipPositions.cpp \
 	Fetcher.cpp
 

@@ -4,5 +4,7 @@ noinst_HEADERS =  \
 	FetchedInfoBase.hpp \
 	FetchedInfoScholarship.hpp \
 	FetcherBase.hpp \
+	FetcherDbworld.hpp \
+	FetcherManual.hpp \
 	FetcherScholarshipPositions.hpp \
 	Fetcher.hpp

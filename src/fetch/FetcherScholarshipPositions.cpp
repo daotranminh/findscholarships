@@ -74,16 +74,8 @@ FetcherScholarshipPositions::fetch()
       std::cerr << "Cannot open file \"" << m_FilenameInputScholarshipPositionsGmail << "\" for writing!" << std::endl;
       return;
     }
-                                                
-  std::string content_gmail = "";
 
-  // ToDo: check for a better way to get the content of the whole file
-  std::string line = "";
-  while (!file_input.eof())
-    {
-      std::getline(file_input, line);
-      content_gmail = content_gmail + line + "\n";
-    }
+  std::string content_gmail((std::istreambuf_iterator<char>(file_input)), std::istreambuf_iterator<char>());
 
   HTML::ParserDom parser;
   tree<HTML::Node> dom = parser.parseTree(content_gmail);

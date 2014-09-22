@@ -17,6 +17,11 @@ FetcherScholarshipPositions::FetcherScholarshipPositions(const std::string &path
 { }
 
 
+
+FetcherScholarshipPositions::~FetcherScholarshipPositions()
+{ }
+
+
 void
 FetcherScholarshipPositions::fetchOneScholarshipPosition(std::ofstream &file_output,
                                                          const std::string &now,

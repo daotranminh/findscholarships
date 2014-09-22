@@ -26,6 +26,8 @@ lib_LTLIBRARIES = libfetch.la
 
 libfetch_la_SOURCES = \
 	FetchedInfo.cpp \
+	FetcherBase.cpp \
+	FetcherScholarshipPositions.cpp \
 	Fetcher.cpp
 
 bin_PROGRAMS = fetch

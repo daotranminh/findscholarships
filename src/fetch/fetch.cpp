@@ -2,10 +2,51 @@
 
 #include <boost/program_options.hpp>
 
-#include "fetch/Fetcher.hpp"
+#include "fetch/FetcherDbworld.hpp"
+#include "fetch/FetcherManual.hpp"
+#include "fetch/FetcherScholarshipPositions.hpp"
 #include "utilities/Configuration.hpp"
 #include "utilities/Logger.hpp"
 #include "utilities/ProgramOptions.hpp"
+
+
+
+void
+fetchManual()
+{
+  FetcherManual fm(Configuration::instance()->pathTemp(),
+                   Configuration::instance()->pathDatabase(),
+                   Configuration::instance()->inputLinks(), 
+                   Configuration::instance()->inputFetched());
+  
+  fm.fetch();
+}
+
+
+
+void
+fetchDbworld()
+{
+  FetcherDbworld fd(Configuration::instance()->pathTemp(),
+                    Configuration::instance()->pathDatabase(),
+                    Configuration::instance()->markerDbworld(),
+                    Configuration::instance()->inputDbworld());
+  
+  fd.fetch();
+}
+
+
+
+void
+fetchScholarshipPositions()
+{
+  FetcherScholarshipPositions fsp(Configuration::instance()->pathTemp(),
+                                  Configuration::instance()->pathDatabase(),
+                                  Configuration::instance()->htmlScholarshipPositionsGmail(),
+                                  Configuration::instance()->inputScholarshipPositionsGmail());
+
+  fsp.fetch();
+}
 
 
 int main(int argc, char *argv[])
@@ -35,58 +76,50 @@ int main(int argc, char *argv[])
 
   std::string config_filename = "/Users/minhdt/Documents/softwares/findscholarships-website/config.cfg";
 
-  Configuration* config = Configuration::instance();
-  config->readConfig(config_filename);
+  Configuration::instance()->readConfig(config_filename);
 
   DBGINFO("Fetching starts...");
 
-  Fetcher fc(config->pathTemp(),
-	     config->pathDatabase(),
-	     config->inputLinks(), 
-	     config->inputFetched(),
-	     config->markerDbworld(),
-	     config->inputDbworld(),
-             config->htmlScholarshipPositionsGmail(),
-             config->inputScholarshipPositionsGmail());
-
   if (fetch_from == "manual")
     {
-      DBGDEBUG("pathTemp      = " << config->pathTemp())
-      DBGDEBUG("inputLinks    = " << config->inputLinks())
-      DBGDEBUG("inputFetched  = " << config->inputFetched())
+      DBGDEBUG("pathTemp      = " << Configuration::instance()->pathTemp())
+      DBGDEBUG("inputLinks    = " << Configuration::instance()->inputLinks())
+      DBGDEBUG("inputFetched  = " << Configuration::instance()->inputFetched())
 
-      fc.fetchMultiple();
+      fetchManual();
     }
   else if (fetch_from == "dbworld")
     {
-      DBGDEBUG("inputDatabase = " << config->pathDatabase())
-      DBGDEBUG("markerDbworld = " << config->markerDbworld())
-      DBGDEBUG("inputDbworld  = " << config->inputDbworld())
-      fc.fetchDbworld();
+      DBGDEBUG("inputDatabase = " << Configuration::instance()->pathDatabase())
+      DBGDEBUG("markerDbworld = " << Configuration::instance()->markerDbworld())
+      DBGDEBUG("inputDbworld  = " << Configuration::instance()->inputDbworld())
+
+      fetchDbworld();
     }
   else if (fetch_from == "spgmail") // Scholarship Positions Gmail.
     {
-      DBGDEBUG("inputDatabase = " << config->pathDatabase())
-      DBGDEBUG("pathTemp      = " << config->pathTemp())
-      DBGDEBUG("htmlSPGmail   = " << config->htmlScholarshipPositionsGmail())
-      DBGDEBUG("inputSPGmail  = " << config->inputScholarshipPositionsGmail())
-      fc.fetchScholarshipPositionsGmail();
+      DBGDEBUG("inputDatabase = " << Configuration::instance()->pathDatabase())
+      DBGDEBUG("pathTemp      = " << Configuration::instance()->pathTemp())
+      DBGDEBUG("htmlSPGmail   = " << Configuration::instance()->htmlScholarshipPositionsGmail())
+      DBGDEBUG("inputSPGmail  = " << Configuration::instance()->inputScholarshipPositionsGmail())
+
+      fetchScholarshipPositions();
     }
   else
     {
       assert (fetch_from == "all");
-      DBGDEBUG("pathTemp      = " << config->pathTemp())
-      DBGDEBUG("inputDatabase = " << config->pathDatabase())
-      DBGDEBUG("inputLinks    = " << config->inputLinks())
-      DBGDEBUG("inputFetched  = " << config->inputFetched())
-      DBGDEBUG("markerDbworld = " << config->markerDbworld())
-      DBGDEBUG("htmlSPGmail   = " << config->htmlScholarshipPositionsGmail())
-      DBGDEBUG("inputSPGmail  = " << config->inputScholarshipPositionsGmail())
+      DBGDEBUG("pathTemp      = " << Configuration::instance()->pathTemp())
+      DBGDEBUG("inputDatabase = " << Configuration::instance()->pathDatabase())
+      DBGDEBUG("inputLinks    = " << Configuration::instance()->inputLinks())
+      DBGDEBUG("inputFetched  = " << Configuration::instance()->inputFetched())
+      DBGDEBUG("markerDbworld = " << Configuration::instance()->markerDbworld())
+      DBGDEBUG("htmlSPGmail   = " << Configuration::instance()->htmlScholarshipPositionsGmail())
+      DBGDEBUG("inputSPGmail  = " << Configuration::instance()->inputScholarshipPositionsGmail())
 
-      fc.fetchMultiple();
-      fc.fetchDbworld();
-      fc.fetchScholarshipPositionsGmail();
-    }
+      fetchManual();
+      fetchDbworld();
+      fetchScholarshipPositions();
+     }
 
   DBGINFO("Fetching finished...");
 }

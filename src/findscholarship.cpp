@@ -70,15 +70,22 @@ main (int argc, const char *argv[])
       DBGINFO("From ScholarshipPositions Gmail...")
       man.processBatch(config->pathTemp() + config->inputScholarshipPositionsGmail(), db);
     }
+  else if (from == "slgmail")
+    {
+      DBGINFO("From ScholarshipLinks Gmail...")
+      man.processBatch(config->pathTemp() + config->inputScholarshipLinksGmail(), db);
+    }
   else
     {
       assert (from == "all");
-      DBGINFO("From manual input...")
-      man.processBatch(config->pathTemp() + config->inputFetched(), db);
+      // DBGINFO("From manual input...")
+      // man.processBatch(config->pathTemp() + config->inputFetched(), db);
       DBGINFO("From dbworld...")
       man.processBatch(config->pathTemp() + config->inputDbworld(), db);
       DBGINFO("From ScholarshipPositions Gmail...")
       man.processBatch(config->pathTemp() + config->inputScholarshipPositionsGmail(), db);
+      DBGINFO("From ScholarshipLinks Gmail...")
+      man.processBatch(config->pathTemp() + config->inputScholarshipLinksGmail(), db);
     }
 
   DBGINFO("Finish!")

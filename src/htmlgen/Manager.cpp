@@ -101,11 +101,7 @@ Manager::processSingle(FetchedInfoScholarship &fis,
   HtmlGenBase* generator = getGenerator(fis.m_URL);
   assert (generator != NULL);
 
-  std::cout << "Before processing: " << fis.m_Title << std::endl;
-
   generator->process(fis);
-
-  std::cout << "After processing: " << fis.m_Title << std::endl;
 
   const HtmlResult& result = generator->getHtmlResult();
   

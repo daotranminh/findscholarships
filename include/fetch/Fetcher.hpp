@@ -59,9 +59,6 @@ private:
   const std::string 
   currentDateTime();
 
-  bool
-  isPotentialTitle(const std::string &s);
-
   void
   fetchOneScholarshipPosition(std::ofstream &file_output,
                               const std::string &now,

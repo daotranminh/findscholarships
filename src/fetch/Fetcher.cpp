@@ -401,13 +401,6 @@ Fetcher::fetchDbworld()
 
 
 
-bool
-Fetcher::isPotentialTitle(const std::string &s)
-{
-  return (s.find("Tags:") == std::string::npos && s.find("Apply Now") == std::string::npos && s != "&nbsp;");
-}
-
-
 void
 Fetcher::fetchScholarshipPositionsGmail()
 {

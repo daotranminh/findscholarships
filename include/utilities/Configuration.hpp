@@ -109,6 +109,18 @@ public:
   }
 
   const std::string&
+  htmlScholarshipLinksGmail()
+  {
+    return filename_html_scholarship_links_gmail;
+  }
+
+  const std::string&
+  inputScholarshipLinksGmail()
+  {
+    return filename_input_scholarship_links_gmail;
+  }
+
+  const std::string&
   pathTemp();
 
 private:
@@ -138,6 +150,8 @@ private:
   std::string filename_input_dbworld;
   std::string filename_html_scholarship_positions_gmail;
   std::string filename_input_scholarship_positions_gmail;
+  std::string filename_html_scholarship_links_gmail;
+  std::string filename_input_scholarship_links_gmail;
   
   StringVec path_storages;
   StringVec category_titles;

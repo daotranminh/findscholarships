@@ -4,6 +4,7 @@
 
 #include "fetch/FetcherDbworld.hpp"
 #include "fetch/FetcherManual.hpp"
+#include "fetch/FetcherScholarshipLinks.hpp"
 #include "fetch/FetcherScholarshipPositions.hpp"
 #include "utilities/Configuration.hpp"
 #include "utilities/Logger.hpp"
@@ -38,6 +39,19 @@ fetchDbworld()
 
 
 void
+fetchScholarshipLinks()
+{
+  FetcherScholarshipLinks fsl(Configuration::instance()->pathTemp(),
+                              Configuration::instance()->pathDatabase(),
+                              Configuration::instance()->htmlScholarshipLinksGmail(),
+                              Configuration::instance()->inputScholarshipLinksGmail());
+
+  fsl.fetch();
+}
+
+
+
+void
 fetchScholarshipPositions()
 {
   FetcherScholarshipPositions fsp(Configuration::instance()->pathTemp(),
@@ -53,7 +67,7 @@ int main(int argc, char *argv[])
 {
   std::string fetch_from = "all";
 
-  const char *help_description = "\nUsage: fetch [--from=all/manual/dbworld/spgmail]\n";
+  const char *help_description = "\nUsage: fetch [--from=all/manual/dbworld/spgmail/slgmail]\n";
   boost::program_options::options_description desc(help_description);
 
   desc.add_options()
@@ -105,21 +119,33 @@ int main(int argc, char *argv[])
 
       fetchScholarshipPositions();
     }
+  else if (fetch_from == "slgmail") // Scholarship Links Gmail.
+    {
+      DBGDEBUG("inputDatabase = " << Configuration::instance()->pathDatabase())
+      DBGDEBUG("pathTemp      = " << Configuration::instance()->pathTemp())
+      DBGDEBUG("htmlSLGmail   = " << Configuration::instance()->htmlScholarshipLinksGmail())
+      DBGDEBUG("inputSLGmail  = " << Configuration::instance()->inputScholarshipLinksGmail())
+
+      fetchScholarshipLinks();
+    }
   else
     {
       assert (fetch_from == "all");
       DBGDEBUG("pathTemp      = " << Configuration::instance()->pathTemp())
       DBGDEBUG("inputDatabase = " << Configuration::instance()->pathDatabase())
-      DBGDEBUG("inputLinks    = " << Configuration::instance()->inputLinks())
-      DBGDEBUG("inputFetched  = " << Configuration::instance()->inputFetched())
+        //DBGDEBUG("inputLinks    = " << Configuration::instance()->inputLinks())
+        //DBGDEBUG("inputFetched  = " << Configuration::instance()->inputFetched())
       DBGDEBUG("markerDbworld = " << Configuration::instance()->markerDbworld())
+      DBGDEBUG("htmlSLGmail   = " << Configuration::instance()->htmlScholarshipLinksGmail())
+      DBGDEBUG("inputSLGmail  = " << Configuration::instance()->inputScholarshipLinksGmail())
       DBGDEBUG("htmlSPGmail   = " << Configuration::instance()->htmlScholarshipPositionsGmail())
       DBGDEBUG("inputSPGmail  = " << Configuration::instance()->inputScholarshipPositionsGmail())
 
-      fetchManual();
+        //fetchManual();
       fetchDbworld();
+      fetchScholarshipLinks();
       fetchScholarshipPositions();
-     }
+    }
 
   DBGINFO("Fetching finished...");
 }

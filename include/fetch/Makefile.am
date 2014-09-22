@@ -6,5 +6,6 @@ noinst_HEADERS =  \
 	FetcherBase.hpp \
 	FetcherDbworld.hpp \
 	FetcherManual.hpp \
+	FetcherScholarshipLinks.hpp \
 	FetcherScholarshipPositions.hpp \
 	Fetcher.hpp

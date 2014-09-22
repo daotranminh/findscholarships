@@ -29,6 +29,7 @@ libfetch_la_SOURCES = \
 	FetcherBase.cpp \
 	FetcherDbworld.cpp \
 	FetcherManual.cpp \
+	FetcherScholarshipLinks.cpp \
 	FetcherScholarshipPositions.cpp \
 	Fetcher.cpp
 

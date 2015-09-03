@@ -5,7 +5,7 @@
 #include "utilities/Configuration.hpp"
 #include "utilities/HelperFunctions.hpp"
 #include "utilities/Logger.hpp"
-#include "htmlgen/DataBase.hpp"
+#include "htmlgen/Database.hpp"
 
 typedef Storage::const_iterator StorageConstIterator;
 typedef std::pair<StorageConstIterator, StorageConstIterator> StorageConstIteratorPair;

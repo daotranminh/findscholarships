@@ -61,3 +61,10 @@ FetcherManual::fetch()
   file_input.close();
   file_output.close();
 }
+
+
+bool
+FetcherManual::getInput(std::ifstream &file_input,
+			FetchedInfoScholarship &fis)
+{
+}
